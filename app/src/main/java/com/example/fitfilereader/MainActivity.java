@@ -22,19 +22,54 @@ import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
 
+import java.io.*;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import com.garmin.fit.*;
+import com.garmin.fit.examples.DecodeExample;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "Test";
     private static final String folderName = "/Fit File Storage/";
 
+    public static int swimTableSize = 200;
+    public static int dataCount = 0;
+    public static int userAge;
+
     ArrayList<String> fileArray;
     ListView listView;
+
+    public static float userWeight;
+    public static float userHeight;
+
+    public static String userGender;
+
+    /* Tabels for swim data */
+    public static String [] swimStorke = new String [swimTableSize];
+    public static int [] temperature = new int [swimTableSize];
+    public static int [] activeLengthsSwimPool = new int [swimTableSize];
+    public static int [] kcalSwim = new int [swimTableSize];
+    public static float [] elapsedTimeSwimming = new float [swimTableSize];
+    public static int [] maxHeartRate = new int [swimTableSize];
+    public static int [] avgHeartRate = new int [swimTableSize];
+    public static float [] avarageSpeed = new float [swimTableSize];
+    public static int [] avarageCadence = new int [swimTableSize];
+    public static float [] totalSwimDistance = new float [swimTableSize];
+
+    /* Summery data from swim data */
+    public static int distanceSwum;
+    public static int allBurnKcal;
+    public static float allTimeSwum;
+
+    InputStream inputStream;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +79,8 @@ public class MainActivity extends AppCompatActivity {
         //Log.d(TAG, "Test 1");
         listView = findViewById(R.id.fileList);
         fileArray = new ArrayList<String>();
-
+        inputStream = null;
+        System.out.println("TEST");
         checkPermission();
         loadFiles();
     }
@@ -98,8 +134,21 @@ public class MainActivity extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
-    public void takeData(View view){
+    public void takeData(View view) throws IOException {
+        // Update list of fit files
+        loadFiles();
 
+        if (fileArray.size() == 0){
+            Toast.makeText(getApplicationContext(), "Directory is empty", Toast.LENGTH_SHORT).show();
+        } else {
+
+            for (int i = 0; i < fileArray.size(); i++){
+                String str = String.format("%s%s%s", Environment.getExternalStorageDirectory(), folderName, fileArray.get(i));
+                decodeFitFiles(str);
+
+            }
+
+        }
     }
 
     public void createDir(View view){
@@ -128,9 +177,11 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
-    public void loadFiles(){
+
+    private void loadFiles(){
         File dir = new File(Environment.getExternalStorageDirectory(), folderName);
         if (dir.exists()) {
+            fileArray.clear();
             for (File f : dir.listFiles()) {
                 if (f.isFile())
                     if (f.getName().substring(f.getName().lastIndexOf(".")).equals(".fit")){
@@ -142,6 +193,70 @@ public class MainActivity extends AppCompatActivity {
                     android.R.layout.simple_list_item_1, fileArray);
             listView.setAdapter(adapter);
         }
+    }
+
+    private void decodeFitFiles(String fileName) throws IOException {
+        File fitFile = new File(fileName);
+
+        inputStream = new FileInputStream(fitFile);
+
+        Decode decode = new Decode();
+
+        MesgBroadcaster mesgBroadcaster = new MesgBroadcaster(decode);
+        Listener listener = new Listener();
+
+        mesgBroadcaster.addListener((UserProfileMesgListener)listener);
+        mesgBroadcaster.addListener((LapMesgListener)listener);
+
+        try {
+            decode.read(inputStream, mesgBroadcaster, mesgBroadcaster);
+        } catch (FitRuntimeException e) {
+            // If a file with 0 data size in it's header  has been encountered,
+            // attempt to keep processing the file
+            if (decode.getInvalidFileDataSize()) {
+                decode.nextFile();
+                decode.read(inputStream, mesgBroadcaster, mesgBroadcaster);
+            } else {
+                System.err.print("Exception decoding file: ");
+                System.err.println(e.getMessage());
+
+                return;
+            }
+        }
+        inputStream.close();
+        printData();
+        fitFile.delete();
+    }
+
+    private void printData(){
+        String [] tmpData = new String [swimTableSize];
+        for (int i = 0; i < dataCount; i++){
+            tmpData[i] = String.format(swimStorke[i] +
+                            ", " + temperature[i] +
+                            ", " + activeLengthsSwimPool[i] +
+                            ", " + totalSwimDistance[i] +
+                            ", " + kcalSwim[i] +
+                            ", " + elapsedTimeSwimming[i] +
+                            ", " + maxHeartRate[i] +
+                            ", " + avgHeartRate[i] +
+                            ", " + avarageSpeed[i] +
+                            ", " + avarageCadence[i]
+                    );
+            distanceSwum += totalSwimDistance[i];
+            allBurnKcal += kcalSwim[i];
+            allTimeSwum += elapsedTimeSwimming[i];
+
+        }
+        allTimeSwum = allTimeSwum / 60;
+        for (int i = 0; i < dataCount; i++){ Log.d("DATA", tmpData[i]); }
+        Log.d("SUMMARY DATA", "\nAll swum distance : " + distanceSwum + " [m] " + "\nAll burned kcal in training: " + allBurnKcal + " [kcal]" + "\nTime: " + allTimeSwum + " [min]");
+        String tmp = String.format("Age: %s, Gender: %s, Height: %s, Weight: %s", userAge, userGender, userHeight, userWeight);
+        Log.d("DATA", tmp);
+        Log.d("DATA COUNT", String.valueOf(dataCount));
+        dataCount = 0;
+        distanceSwum = 0;
+        allBurnKcal = 0;
+        allTimeSwum = 0;
     }
 
     private class StableArrayAdapter extends ArrayAdapter<String> {
@@ -167,6 +282,144 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
 
+    }
+
+    public static class Listener implements LapMesgListener, UserProfileMesgListener {
+
+
+        @Override
+        public void onMesg(UserProfileMesg mesg) {
+
+            if (mesg.getGender() != null) {
+                if (mesg.getGender() == Gender.MALE) {
+                    userGender = "Male";
+                } else if (mesg.getGender() == Gender.FEMALE) {
+                    userGender = "Female";
+                }
+            }
+
+            if (mesg.getAge() != null) {
+                userAge = mesg.getAge();
+            }
+
+            if (mesg.getWeight() != null) {
+                userWeight = mesg.getWeight();
+            }
+
+            if (mesg.getHeight() != null){
+                userHeight = mesg.getHeight();
+            }
+        }
+
+        @Override
+        public void onMesg(LapMesg mesg) {
+            if (mesg.getSubSport() != null){
+                if (mesg.getSubSport().toString().equals("LAP_SWIMMING")){
+                    dataCount = dataCount + 1;
+                    //System.out.println("Swim: ");
+                    if (mesg.getSwimStroke() == null) {
+                        //System.out.print("   Swim Stroke: ");
+                        //System.out.println("BREAK");
+                        swimStorke[dataCount - 1] = "BREAK";
+                    } else {
+                        //System.out.print("   Swim Stroke: ");
+                        //System.out.println(mesg.getSwimStroke());
+                        swimStorke[dataCount - 1] = mesg.getSwimStroke().toString();
+                    }
+                    if (mesg.getMaxSpeed() != null) {
+                        //System.out.print("   Max Speed: ");
+                        //System.out.println(mesg.getMaxSpeed() + " [m/s]");
+                    }
+                    if (mesg.getMaxTemperature() != null) {
+                        //System.out.print("   Max Temperature: ");
+                        //System.out.println(mesg.getMaxTemperature() + " [C]");
+                        temperature[dataCount - 1] = mesg.getMaxTemperature();
+                    }
+                    if (mesg.getNumActiveLengths() != null){ //number of completed lengths of pools | mesg.getNumActiveLengths() * 25 m = x
+                        //System.out.print("   Active lengths of swim pool: ");
+                        //System.out.println(mesg.getNumActiveLengths() + " [m]");
+                        activeLengthsSwimPool[dataCount - 1] = mesg.getNumActiveLengths();
+                    }
+                    if (mesg.getTotalDistance() != null){
+                        //System.out.print("   Total Distance: ");
+                        //System.out.println(mesg.getTotalDistance() + " [m]");
+                        totalSwimDistance[dataCount - 1] = mesg.getTotalDistance();
+                    }
+                    if (mesg.getNumLengths() != null){
+                        //System.out.print("   Lengths of swim pool: ");
+                        //System.out.println(mesg.getNumLengths() + " [m]");
+                    }
+                    if (mesg.getTotalCalories() != null){
+                        //System.out.print("   Total Calories: ");
+                        //System.out.println(mesg.getTotalCalories() + " [kcal]");
+                        kcalSwim[dataCount - 1] = mesg.getTotalCalories();
+                    }
+                    if (mesg.getStartTime() != null){
+                        //System.out.print("   Start Time: ");
+                        //System.out.println(mesg.getStartTime());
+                    }
+                    if (mesg.getTimestamp() != null){
+                        //System.out.print("   End Time: ");
+                        //System.out.println(mesg.getTimestamp());
+                    }
+                    if (mesg.getTotalElapsedTime() != null){
+                        //System.out.print("   Total Elapsed Time: ");
+                        //System.out.println(mesg.getTotalElapsedTime() + " [s]");
+                        elapsedTimeSwimming[dataCount - 1] = mesg.getTotalElapsedTime();
+                    }
+                    if (mesg.getAvgSpeed() != null){
+                        //System.out.print("   Avarage Speed: ");
+                        //System.out.println(mesg.getAvgSpeed() + " [m/s]");
+                    }
+                    if (mesg.getAvgNegVerticalSpeed() != null){
+                        //System.out.print("   Avg Neg Vertical Speed: ");
+                        //System.out.println(mesg.getAvgNegVerticalSpeed() + " [m/s]");
+                    }
+                    if (mesg.getAvgPosVerticalSpeed() != null){
+                        //System.out.print("   Avg Pos Vertical Speed: ");
+                        //System.out.println(mesg.getAvgPosVerticalSpeed() + " [m/s]");
+                    }
+                    if (mesg.getNumActiveLengths() != null && mesg.getTotalElapsedTime() != null){
+                        //System.out.print("   My Avarage Speed: ");
+                        //System.out.println(mesg.getTotalDistance() / mesg.getTotalElapsedTime() + " [m/s]");
+                        avarageSpeed[dataCount - 1] = mesg.getTotalDistance() / mesg.getTotalElapsedTime();
+                    }
+                    if (mesg.getMaxHeartRate() != null){
+                        //System.out.print("   Max Heart Rate: ");
+                        //System.out.println(mesg.getMaxHeartRate() + " [bpm]");
+                        maxHeartRate[dataCount - 1] = mesg.getMaxHeartRate();
+                    }
+                    if (mesg.getMinHeartRate() != null){
+                        //System.out.print("   Min Heart Rate: ");
+                        //System.out.println(mesg.getMinHeartRate() + " [bpm]");
+                    }
+                    if (mesg.getAvgHeartRate() != null){
+                        //System.out.print("   Avg Heart Rate: ");
+                       // System.out.println(mesg.getAvgHeartRate() + " [bpm]");
+                        avgHeartRate[dataCount - 1] = mesg.getAvgHeartRate();
+                    }
+                    if (mesg.getMaxHeartRate() != null && mesg.getMinHeartRate() != null){
+                        float avgMaxHeartRate = ((mesg.getMaxHeartRate() + mesg.getMinHeartRate()) / 2);
+                        //System.out.print("   My Avg Heart Rate: ");
+                        //System.out.println(avgMaxHeartRate + " [bpm]");
+                    }
+                    if (mesg.getAvgCadence() != null){
+                        //System.out.print("   Avarage Cadence: ");
+                        //System.out.println(mesg.getAvgCadence());
+                        avarageCadence[dataCount - 1] = mesg.getAvgCadence();
+                    }
+                    if (mesg.getStrokeCount() != null){
+                        //System.out.print("   Stroke Count: ");
+                        //System.out.println(mesg.getStrokeCount());
+                    }
+                    if (mesg.getAvgStrokeDistance() != null){
+                        //System.out.print("   Avarage Stroke Distance: ");
+                        //System.out.println(mesg.getAvgStrokeDistance() + " [m]");
+                    }
+                    //printValues(mesg, LapMesg.SwimStrokeFieldNum);
+                }
+            }
+        }
     }
 }
 
