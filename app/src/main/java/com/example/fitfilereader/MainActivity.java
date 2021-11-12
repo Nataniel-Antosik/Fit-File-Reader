@@ -145,9 +145,8 @@ public class MainActivity extends AppCompatActivity {
             for (int i = 0; i < fileArray.size(); i++){
                 String str = String.format("%s%s%s", Environment.getExternalStorageDirectory(), folderName, fileArray.get(i));
                 decodeFitFiles(str);
-
             }
-
+            loadFiles();
         }
     }
 
