@@ -37,7 +37,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_weight="0.3"
-        android:weightSum="2">
+        android:weightSum="1">
 
         <Button
             android:id="@+id/takeData"
@@ -49,14 +49,5 @@
             android:text="@string/take_data"
             android:textSize="2.3mm" />
 
-        <Button
-            android:id="@+id/createDir"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="4dp"
-            android:layout_weight="1"
-            android:onClick="createDir"
-            android:text="@string/create_directory"
-            android:textSize="2.3mm" />
     </LinearLayout>
 </LinearLayout>

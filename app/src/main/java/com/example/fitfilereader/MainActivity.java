@@ -1,8 +1,10 @@
 package com.example.fitfilereader;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.content.Context;
@@ -80,9 +82,20 @@ public class MainActivity extends AppCompatActivity {
         listView = findViewById(R.id.fileList);
         fileArray = new ArrayList<String>();
         inputStream = null;
-        System.out.println("TEST");
         checkPermission();
         loadFiles();
+
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.R)
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //Log.i(TAG, "onResume");
+        if (Environment.isExternalStorageManager() == true) {
+            createFolder();
+            //Log.i(TAG, "Create folder");
+        }
     }
 
     private void checkPermission() {
@@ -122,7 +135,9 @@ public class MainActivity extends AppCompatActivity {
                     boolean readPer = grantResults[0] == PackageManager.PERMISSION_GRANTED;
                     if (readPer) {
                         Toast.makeText(this, "Permission granted", Toast.LENGTH_SHORT).show();
-
+                        if (Build.VERSION.SDK_INT < 30) {
+                            createFolder();
+                        }
                     } else {
                         Toast.makeText(this, "Permision Denied", Toast.LENGTH_SHORT).show();
                     }
@@ -138,29 +153,28 @@ public class MainActivity extends AppCompatActivity {
         // Update list of fit files
         loadFiles();
 
-        if (fileArray.size() == 0){
-            Toast.makeText(getApplicationContext(), "Directory is empty", Toast.LENGTH_SHORT).show();
+        File file = new File(Environment.getExternalStorageDirectory(), folderName);
+        if (!file.exists()){
+            Toast.makeText(getApplicationContext(),
+                    "Directory is not exist",
+                    Toast.LENGTH_SHORT).show();
         } else {
+            if (fileArray.size() == 0){
+                Toast.makeText(getApplicationContext(), "Directory is empty", Toast.LENGTH_SHORT).show();
+            } else {
 
-            for (int i = 0; i < fileArray.size(); i++){
-                String str = String.format("%s%s%s", Environment.getExternalStorageDirectory(), folderName, fileArray.get(i));
-                decodeFitFiles(str);
+                for (int i = 0; i < fileArray.size(); i++){
+                    String str = String.format("%s%s%s", Environment.getExternalStorageDirectory(), folderName, fileArray.get(i));
+                    decodeFitFiles(str);
+                }
+                loadFiles();
             }
-            loadFiles();
         }
-    }
-
-    public void createDir(View view){
-        createFolder();
     }
 
     private void createFolder() {
         File file = new File(Environment.getExternalStorageDirectory(), folderName);
-        if (file.exists()){
-            Toast.makeText(getApplicationContext(),
-                    "Directory is already exist",
-                    Toast.LENGTH_SHORT).show();
-        } else {
+        if (!file.exists()){
             file.mkdirs();
             if (file.isDirectory()){
                 Toast.makeText(getApplicationContext(),
