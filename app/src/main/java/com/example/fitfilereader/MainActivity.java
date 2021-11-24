@@ -22,6 +22,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.fitfilereader.db.FileDatabase;
+import com.example.fitfilereader.db.FitFile;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.io.*;
@@ -94,6 +96,7 @@ public class MainActivity extends AppCompatActivity {
         //Log.i(TAG, "onResume");
         if (Environment.isExternalStorageManager() == true) {
             createFolder();
+            loadFiles();
             //Log.i(TAG, "Create folder");
         }
     }
@@ -238,6 +241,8 @@ public class MainActivity extends AppCompatActivity {
         }
         inputStream.close();
         printData();
+        testLoadFitFileList();
+        getLastIdInDatabase();
         fitFile.delete();
     }
 
@@ -261,11 +266,12 @@ public class MainActivity extends AppCompatActivity {
 
         }
         allTimeSwum = allTimeSwum / 60;
-        for (int i = 0; i < dataCount; i++){ Log.d("DATA", tmpData[i]); }
+        //for (int i = 0; i < dataCount; i++){ Log.d("DATA", tmpData[i]); }
         Log.d("SUMMARY DATA", "\nAll swum distance : " + distanceSwum + " [m] " + "\nAll burned kcal in training: " + allBurnKcal + " [kcal]" + "\nTime: " + allTimeSwum + " [min]");
         String tmp = String.format("Age: %s, Gender: %s, Height: %s, Weight: %s", userAge, userGender, userHeight, userWeight);
-        Log.d("DATA", tmp);
+        //Log.d("DATA", tmp);
         Log.d("DATA COUNT", String.valueOf(dataCount));
+        saveFileData(distanceSwum, allBurnKcal, allTimeSwum);
         dataCount = 0;
         distanceSwum = 0;
         allBurnKcal = 0;
@@ -297,12 +303,40 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public static class Listener implements LapMesgListener, UserProfileMesgListener {
+    /* Save data to database */
+    private void saveFileData(int distanceSwum, int allBurnKcal, float allTimeSwum){
+        FileDatabase database = FileDatabase.getDbInstance(this.getApplicationContext());
 
+        FitFile fitFile = new FitFile();
+        fitFile.distanceSwum = distanceSwum;
+        fitFile.allBurnKcal = allBurnKcal;
+        fitFile.allTimeSwum = allTimeSwum;
+        database.fileDao().insertFile(fitFile);
+
+        //finish();
+    }
+
+    private void testLoadFitFileList(){
+        FileDatabase database = FileDatabase.getDbInstance(this.getApplicationContext());
+        List<FitFile> fitFileList = database.fileDao().getAllFitFileList();
+
+        for (int i = 0; i < fitFileList.size(); i++){
+            String str = String.format("ID: %s Distance Swum: %s All Time Swum %s All Burn Kcal: %s ", fitFileList.get(i).fID, fitFileList.get(i).distanceSwum, fitFileList.get(i).allTimeSwum, fitFileList.get(i).allBurnKcal);
+            Log.d("DATABASE", str);
+        }
+    }
+
+    private void getLastIdInDatabase(){
+        FileDatabase database = FileDatabase.getDbInstance(this.getApplicationContext());
+        int lastId = database.fileDao().getLastID();
+        Log.d("LAST_ID", String.valueOf(lastId));
+    }
+
+    public static class Listener implements LapMesgListener, UserProfileMesgListener {
 
         @Override
         public void onMesg(UserProfileMesg mesg) {
-
+        // User Profile Mesg Listener
             if (mesg.getGender() != null) {
                 if (mesg.getGender() == Gender.MALE) {
                     userGender = "Male";
