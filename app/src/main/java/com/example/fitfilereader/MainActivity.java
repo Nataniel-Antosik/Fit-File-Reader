@@ -58,7 +58,6 @@ public class MainActivity extends AppCompatActivity {
 
     /* Tabels for swim data */
     public static String [] swimStorke = new String [swimTableSize];
-    public static int [] temperature = new int [swimTableSize];
     public static int [] activeLengthsSwimPool = new int [swimTableSize];
     public static int [] kcalSwim = new int [swimTableSize];
     public static float [] elapsedTimeSwimming = new float [swimTableSize];
@@ -250,7 +249,6 @@ public class MainActivity extends AppCompatActivity {
         String [] tmpData = new String [swimTableSize];
         for (int i = 0; i < dataCount; i++){
             tmpData[i] = String.format(swimStorke[i] +
-                            ", " + temperature[i] +
                             ", " + activeLengthsSwimPool[i] +
                             ", " + totalSwimDistance[i] +
                             ", " + kcalSwim[i] +
@@ -364,107 +362,47 @@ public class MainActivity extends AppCompatActivity {
             if (mesg.getSubSport() != null){
                 if (mesg.getSubSport().toString().equals("LAP_SWIMMING")){
                     dataCount = dataCount + 1;
-                    //System.out.println("Swim: ");
                     if (mesg.getSwimStroke() == null) {
-                        //System.out.print("   Swim Stroke: ");
-                        //System.out.println("BREAK");
                         swimStorke[dataCount - 1] = "BREAK";
                     } else {
-                        //System.out.print("   Swim Stroke: ");
-                        //System.out.println(mesg.getSwimStroke());
                         swimStorke[dataCount - 1] = mesg.getSwimStroke().toString();
                     }
                     if (mesg.getMaxSpeed() != null) {
-                        //System.out.print("   Max Speed: ");
-                        //System.out.println(mesg.getMaxSpeed() + " [m/s]");
-                    }
-                    if (mesg.getMaxTemperature() != null) {
-                        //System.out.print("   Max Temperature: ");
-                        //System.out.println(mesg.getMaxTemperature() + " [C]");
-                        temperature[dataCount - 1] = mesg.getMaxTemperature();
                     }
                     if (mesg.getNumActiveLengths() != null){ //number of completed lengths of pools | mesg.getNumActiveLengths() * 25 m = x
-                        //System.out.print("   Active lengths of swim pool: ");
-                        //System.out.println(mesg.getNumActiveLengths() + " [m]");
                         activeLengthsSwimPool[dataCount - 1] = mesg.getNumActiveLengths();
                     }
                     if (mesg.getTotalDistance() != null){
-                        //System.out.print("   Total Distance: ");
-                        //System.out.println(mesg.getTotalDistance() + " [m]");
                         totalSwimDistance[dataCount - 1] = mesg.getTotalDistance();
                     }
-                    if (mesg.getNumLengths() != null){
-                        //System.out.print("   Lengths of swim pool: ");
-                        //System.out.println(mesg.getNumLengths() + " [m]");
-                    }
                     if (mesg.getTotalCalories() != null){
-                        //System.out.print("   Total Calories: ");
-                        //System.out.println(mesg.getTotalCalories() + " [kcal]");
                         kcalSwim[dataCount - 1] = mesg.getTotalCalories();
                     }
                     if (mesg.getStartTime() != null){
-                        //System.out.print("   Start Time: ");
-                        //System.out.println(mesg.getStartTime());
+                        //Maybe TO DO
                     }
                     if (mesg.getTimestamp() != null){
-                        //System.out.print("   End Time: ");
-                        //System.out.println(mesg.getTimestamp());
+                        //Maybe TO DO
                     }
                     if (mesg.getTotalElapsedTime() != null){
-                        //System.out.print("   Total Elapsed Time: ");
-                        //System.out.println(mesg.getTotalElapsedTime() + " [s]");
                         elapsedTimeSwimming[dataCount - 1] = mesg.getTotalElapsedTime();
                     }
                     if (mesg.getAvgSpeed() != null){
-                        //System.out.print("   Avarage Speed: ");
-                        //System.out.println(mesg.getAvgSpeed() + " [m/s]");
+                        avarageSpeed[dataCount - 1] = mesg.getAvgSpeed();
                     }
-                    if (mesg.getAvgNegVerticalSpeed() != null){
-                        //System.out.print("   Avg Neg Vertical Speed: ");
-                        //System.out.println(mesg.getAvgNegVerticalSpeed() + " [m/s]");
-                    }
-                    if (mesg.getAvgPosVerticalSpeed() != null){
-                        //System.out.print("   Avg Pos Vertical Speed: ");
-                        //System.out.println(mesg.getAvgPosVerticalSpeed() + " [m/s]");
-                    }
-                    if (mesg.getNumActiveLengths() != null && mesg.getTotalElapsedTime() != null){
-                        //System.out.print("   My Avarage Speed: ");
-                        //System.out.println(mesg.getTotalDistance() / mesg.getTotalElapsedTime() + " [m/s]");
+                    if (mesg.getAvgSpeed() == null && mesg.getNumActiveLengths() != null && mesg.getTotalElapsedTime() != null){
+                        //It is my way to calculate Avarage speed
                         avarageSpeed[dataCount - 1] = mesg.getTotalDistance() / mesg.getTotalElapsedTime();
                     }
                     if (mesg.getMaxHeartRate() != null){
-                        //System.out.print("   Max Heart Rate: ");
-                        //System.out.println(mesg.getMaxHeartRate() + " [bpm]");
                         maxHeartRate[dataCount - 1] = mesg.getMaxHeartRate();
                     }
-                    if (mesg.getMinHeartRate() != null){
-                        //System.out.print("   Min Heart Rate: ");
-                        //System.out.println(mesg.getMinHeartRate() + " [bpm]");
-                    }
                     if (mesg.getAvgHeartRate() != null){
-                        //System.out.print("   Avg Heart Rate: ");
-                       // System.out.println(mesg.getAvgHeartRate() + " [bpm]");
                         avgHeartRate[dataCount - 1] = mesg.getAvgHeartRate();
                     }
-                    if (mesg.getMaxHeartRate() != null && mesg.getMinHeartRate() != null){
-                        float avgMaxHeartRate = ((mesg.getMaxHeartRate() + mesg.getMinHeartRate()) / 2);
-                        //System.out.print("   My Avg Heart Rate: ");
-                        //System.out.println(avgMaxHeartRate + " [bpm]");
-                    }
                     if (mesg.getAvgCadence() != null){
-                        //System.out.print("   Avarage Cadence: ");
-                        //System.out.println(mesg.getAvgCadence());
                         avarageCadence[dataCount - 1] = mesg.getAvgCadence();
                     }
-                    if (mesg.getStrokeCount() != null){
-                        //System.out.print("   Stroke Count: ");
-                        //System.out.println(mesg.getStrokeCount());
-                    }
-                    if (mesg.getAvgStrokeDistance() != null){
-                        //System.out.print("   Avarage Stroke Distance: ");
-                        //System.out.println(mesg.getAvgStrokeDistance() + " [m]");
-                    }
-                    //printValues(mesg, LapMesg.SwimStrokeFieldNum);
                 }
             }
         }
