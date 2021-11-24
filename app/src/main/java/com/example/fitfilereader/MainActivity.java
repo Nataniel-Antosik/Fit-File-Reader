@@ -271,7 +271,7 @@ public class MainActivity extends AppCompatActivity {
         String tmp = String.format("Age: %s, Gender: %s, Height: %s, Weight: %s", userAge, userGender, userHeight, userWeight);
         //Log.d("DATA", tmp);
         Log.d("DATA COUNT", String.valueOf(dataCount));
-        saveFileData(distanceSwum, allBurnKcal, allTimeSwum);
+        saveFileData(getLastIdInDatabase() + 1, distanceSwum, allBurnKcal, allTimeSwum);
         dataCount = 0;
         distanceSwum = 0;
         allBurnKcal = 0;
@@ -304,10 +304,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /* Save data to database */
-    private void saveFileData(int distanceSwum, int allBurnKcal, float allTimeSwum){
+    private void saveFileData(int id, int distanceSwum, int allBurnKcal, float allTimeSwum){
         FileDatabase database = FileDatabase.getDbInstance(this.getApplicationContext());
 
         FitFile fitFile = new FitFile();
+        fitFile.fID = id;
         fitFile.distanceSwum = distanceSwum;
         fitFile.allBurnKcal = allBurnKcal;
         fitFile.allTimeSwum = allTimeSwum;
@@ -326,10 +327,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void getLastIdInDatabase(){
+    private int getLastIdInDatabase(){
         FileDatabase database = FileDatabase.getDbInstance(this.getApplicationContext());
-        int lastId = database.fileDao().getLastID();
-        Log.d("LAST_ID", String.valueOf(lastId));
+        Log.d("LAST_ID", String.valueOf(database.fileDao().getLastID()));
+        return database.fileDao().getLastID();
     }
 
     public static class Listener implements LapMesgListener, UserProfileMesgListener {

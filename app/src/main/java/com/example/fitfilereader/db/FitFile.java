@@ -7,8 +7,8 @@ import androidx.room.PrimaryKey;
 @Entity
 public class FitFile {
 
-    @PrimaryKey(autoGenerate = true)
-    public int fID;
+    @PrimaryKey
+    public int fID = 0;
 
     @ColumnInfo(name = "distance_Swum")
     public int distanceSwum;
