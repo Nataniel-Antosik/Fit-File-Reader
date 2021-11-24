@@ -154,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
     public void takeData(View view) throws IOException {
         // Update list of fit files
         loadFiles();
-
+        testLoadFitFileList();
         File file = new File(Environment.getExternalStorageDirectory(), folderName);
         if (!file.exists()){
             Toast.makeText(getApplicationContext(),
@@ -240,8 +240,7 @@ public class MainActivity extends AppCompatActivity {
         }
         inputStream.close();
         printData();
-        testLoadFitFileList();
-        getLastIdInDatabase();
+        //testLoadFitFileList();
         fitFile.delete();
     }
 
@@ -263,10 +262,9 @@ public class MainActivity extends AppCompatActivity {
             allTimeSwum += elapsedTimeSwimming[i];
 
         }
-        allTimeSwum = allTimeSwum / 60;
         //for (int i = 0; i < dataCount; i++){ Log.d("DATA", tmpData[i]); }
-        Log.d("SUMMARY DATA", "\nAll swum distance : " + distanceSwum + " [m] " + "\nAll burned kcal in training: " + allBurnKcal + " [kcal]" + "\nTime: " + allTimeSwum + " [min]");
-        String tmp = String.format("Age: %s, Gender: %s, Height: %s, Weight: %s", userAge, userGender, userHeight, userWeight);
+        //Log.d("SUMMARY DATA", "\nAll swum distance : " + distanceSwum + " [m] " + "\nAll burned kcal in training: " + allBurnKcal + " [kcal]" + "\nTime: " + allTimeSwum + " [min]");
+        //String tmp = String.format("Age: %s, Gender: %s, Height: %s, Weight: %s", userAge, userGender, userHeight, userWeight);
         //Log.d("DATA", tmp);
         Log.d("DATA COUNT", String.valueOf(dataCount));
         saveFileData(getLastIdInDatabase() + 1, distanceSwum, allBurnKcal, allTimeSwum);
@@ -319,9 +317,19 @@ public class MainActivity extends AppCompatActivity {
         FileDatabase database = FileDatabase.getDbInstance(this.getApplicationContext());
         List<FitFile> fitFileList = database.fileDao().getAllFitFileList();
 
-        for (int i = 0; i < fitFileList.size(); i++){
-            String str = String.format("ID: %s Distance Swum: %s All Time Swum %s All Burn Kcal: %s ", fitFileList.get(i).fID, fitFileList.get(i).distanceSwum, fitFileList.get(i).allTimeSwum, fitFileList.get(i).allBurnKcal);
-            Log.d("DATABASE", str);
+        if(fitFileList.isEmpty()){
+            Log.d("DATABASE", "Is Empty");
+        } else {
+            for (int i = 0; i < fitFileList.size(); i++){
+                String str = String.format(
+                        "ID: %s Distance Swum: %s All Time Swum %s All Burn Kcal: %s ",
+                        fitFileList.get(i).fID,
+                        fitFileList.get(i).distanceSwum,
+                        showTimeSwim((int) fitFileList.get(i).allTimeSwum),
+                        //fitFileList.get(i).allTimeSwum/60,
+                        fitFileList.get(i).allBurnKcal);
+                Log.d("DATABASE", str);
+            }
         }
     }
 
@@ -329,6 +337,15 @@ public class MainActivity extends AppCompatActivity {
         FileDatabase database = FileDatabase.getDbInstance(this.getApplicationContext());
         Log.d("LAST_ID", String.valueOf(database.fileDao().getLastID()));
         return database.fileDao().getLastID();
+    }
+
+    private String showTimeSwim(int seconds){
+        int sec = seconds % 60;
+        int min = (seconds % 3600) / 60;
+        int hours = seconds / 3600;
+
+        String swimTime = String.format("%02d:%02d:%02d", hours, min, sec);
+        return swimTime;
     }
 
     public static class Listener implements LapMesgListener, UserProfileMesgListener {
