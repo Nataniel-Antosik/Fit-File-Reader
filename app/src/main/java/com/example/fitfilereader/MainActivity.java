@@ -5,6 +5,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.room.ColumnInfo;
 
 import android.Manifest;
 import android.content.Context;
@@ -154,7 +155,8 @@ public class MainActivity extends AppCompatActivity {
     public void takeData(View view) throws IOException {
         // Update list of fit files
         loadFiles();
-        testLoadFitFileList();
+        //testLoadFitFileList();
+        LoadFitFileList();
         File file = new File(Environment.getExternalStorageDirectory(), folderName);
         if (!file.exists()){
             Toast.makeText(getApplicationContext(),
@@ -245,9 +247,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void printData(){
-        String [] tmpData = new String [swimTableSize];
+        int tmpTrainingId = getLastIdInDatabase() + 1;
+        //String [] tmpData = new String [swimTableSize];
         for (int i = 0; i < dataCount; i++){
-            tmpData[i] = String.format(swimStorke[i] +
+            saveFileData(tmpTrainingId, swimStorke[i],
+                    activeLengthsSwimPool[i],
+                    totalSwimDistance[i],
+                    kcalSwim[i],
+                    elapsedTimeSwimming[i],
+                    maxHeartRate[i],
+                    avgHeartRate[i],
+                    avarageSpeed[i],
+                    avarageCadence[i]);
+            /*tmpData[i] = String.format(swimStorke[i] +
                             ", " + activeLengthsSwimPool[i] +
                             ", " + totalSwimDistance[i] +
                             ", " + kcalSwim[i] +
@@ -259,7 +271,7 @@ public class MainActivity extends AppCompatActivity {
                     );
             distanceSwum += totalSwimDistance[i];
             allBurnKcal += kcalSwim[i];
-            allTimeSwum += elapsedTimeSwimming[i];
+            allTimeSwum += elapsedTimeSwimming[i];*/
 
         }
         //for (int i = 0; i < dataCount; i++){ Log.d("DATA", tmpData[i]); }
@@ -267,7 +279,6 @@ public class MainActivity extends AppCompatActivity {
         //String tmp = String.format("Age: %s, Gender: %s, Height: %s, Weight: %s", userAge, userGender, userHeight, userWeight);
         //Log.d("DATA", tmp);
         Log.d("DATA COUNT", String.valueOf(dataCount));
-        saveFileData(getLastIdInDatabase() + 1, distanceSwum, allBurnKcal, allTimeSwum);
         dataCount = 0;
         distanceSwum = 0;
         allBurnKcal = 0;
@@ -300,20 +311,40 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /* Save data to database */
-    private void saveFileData(int id, int distanceSwum, int allBurnKcal, float allTimeSwum){
+    private void saveFileData(
+            int id,
+            String inputswimStorke,
+            int inputActiveLengthsSwimPoolDb,
+            float inputTotalSwimDistanceDb,
+            int inputKcalSwimDb,
+            float inputElapsedTimeSwimmingDb,
+            int inputMaxHeartRateDb,
+            int inputAvgHeartRateDb,
+            float inputAvarageSpeedDb,
+            int inputAvarageCadenceDb) {
+
         FileDatabase database = FileDatabase.getDbInstance(this.getApplicationContext());
 
         FitFile fitFile = new FitFile();
-        fitFile.fID = id;
-        fitFile.distanceSwum = distanceSwum;
-        fitFile.allBurnKcal = allBurnKcal;
-        fitFile.allTimeSwum = allTimeSwum;
+        fitFile.trainingId = id;
+        fitFile.swimStorkeDb = inputswimStorke;
+        fitFile.activeLengthsSwimPoolDb = inputActiveLengthsSwimPoolDb;
+        fitFile.totalSwimDistanceDb = inputTotalSwimDistanceDb;
+        fitFile.kcalSwimDb = inputKcalSwimDb;
+        fitFile.elapsedTimeSwimmingDb = inputElapsedTimeSwimmingDb;
+        fitFile.maxHeartRateDb = inputMaxHeartRateDb;
+        fitFile.avgHeartRateDb = inputAvgHeartRateDb;
+        fitFile.avarageSpeedDb = inputAvarageSpeedDb;
+        fitFile.avarageCadenceDb = inputAvarageCadenceDb;
+//        fitFile.distanceSwum = distanceSwum;
+//        fitFile.allBurnKcal = allBurnKcal;
+//        fitFile.allTimeSwum = allTimeSwum;
         database.fileDao().insertFile(fitFile);
 
         //finish();
     }
 
-    private void testLoadFitFileList(){
+    private void LoadFitFileList(){
         FileDatabase database = FileDatabase.getDbInstance(this.getApplicationContext());
         List<FitFile> fitFileList = database.fileDao().getAllFitFileList();
 
@@ -321,14 +352,27 @@ public class MainActivity extends AppCompatActivity {
             Log.d("DATABASE", "Is Empty");
         } else {
             for (int i = 0; i < fitFileList.size(); i++){
-                String str = String.format(
-                        "ID: %s Distance Swum: %s All Time Swum %s All Burn Kcal: %s ",
-                        fitFileList.get(i).fID,
-                        fitFileList.get(i).distanceSwum,
-                        showTimeSwim((int) fitFileList.get(i).allTimeSwum),
-                        //fitFileList.get(i).allTimeSwum/60,
-                        fitFileList.get(i).allBurnKcal);
+                String str = String.format("Training ID: " + fitFileList.get(i).trainingId +
+                        ", Swim Storke: " + fitFileList.get(i).swimStorkeDb +
+                        ", Lengths Swim Pool: " + fitFileList.get(i).activeLengthsSwimPoolDb +
+                        ", Total Swim Distance: " + fitFileList.get(i).totalSwimDistanceDb +
+                        ", Kcal:  " + fitFileList.get(i).kcalSwimDb +
+                        ", Elapsed Time:  " + showTimeSwim((int) fitFileList.get(i).elapsedTimeSwimmingDb) +
+                        ", Max Heart Rate: " + fitFileList.get(i).maxHeartRateDb +
+                        ", Min Heart Rate: " + fitFileList.get(i).avgHeartRateDb +
+                        ", Avg Speed: " + fitFileList.get(i).avarageSpeedDb +
+                        ", Avg Cadence: " + fitFileList.get(i).avarageCadenceDb
+                );
                 Log.d("DATABASE", str);
+            }
+            for (int i = 1; i <= database.fileDao().getLastID(); i++){
+                String str2 = String.format(
+                        "Training ID: %s, Total Swum Distance: %s, Total Swum Time: %s, Total Burned Kcal: %s",
+                        i,
+                        database.fileDao().getTotalSwumDistanceFile(i),
+                        showTimeSwim(database.fileDao().getTotalSwumTimeSwum(i)),
+                        database.fileDao().getTotalKcalSwim(i));
+                Log.d("DB SUMMARY", str2);
             }
         }
     }
