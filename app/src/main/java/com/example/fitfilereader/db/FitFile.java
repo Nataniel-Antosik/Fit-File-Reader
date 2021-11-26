@@ -4,6 +4,8 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import com.garmin.fit.DateTime;
+
 @Entity
 public class FitFile {
 
@@ -25,6 +27,9 @@ public class FitFile {
     @ColumnInfo(name = "kcal_swim")
     public int kcalSwimDb;
 
+    @ColumnInfo(name = "swim_training_date")
+    public String swimTrainingDateDb;
+
     @ColumnInfo(name = "elapsed_time_swimming")
     public float elapsedTimeSwimmingDb;
 
@@ -39,14 +44,5 @@ public class FitFile {
 
     @ColumnInfo(name = "avarage_cadence")
     public int avarageCadenceDb;
-
-//    @ColumnInfo(name = "distance_Swum")
-//    public int distanceSwum;
-//
-//    @ColumnInfo(name = "all_Burn_Kcal")
-//    public int allBurnKcal;
-//
-//    @ColumnInfo(name = "all_Time_Swum")
-//    public float allTimeSwum;
 
 }

@@ -13,6 +13,9 @@ public interface FileDao {
     @Query("SELECT * FROM fitFile")
     List<FitFile> getAllFitFileList();
 
+    @Query("SELECT * FROM fitFile WHERE training_id = :trainingIdToDatabase")
+    List<FitFile> getOneTraining(int trainingIdToDatabase);
+
     @Query("SELECT MAX(training_id) FROM fitFile")
     int getLastID();
 

@@ -61,17 +61,13 @@ public class MainActivity extends AppCompatActivity {
     public static String [] swimStorke = new String [swimTableSize];
     public static int [] activeLengthsSwimPool = new int [swimTableSize];
     public static int [] kcalSwim = new int [swimTableSize];
+    public static DateTime [] swimTrainingDate = new DateTime [swimTableSize];
     public static float [] elapsedTimeSwimming = new float [swimTableSize];
     public static int [] maxHeartRate = new int [swimTableSize];
     public static int [] avgHeartRate = new int [swimTableSize];
     public static float [] avarageSpeed = new float [swimTableSize];
     public static int [] avarageCadence = new int [swimTableSize];
     public static float [] totalSwimDistance = new float [swimTableSize];
-
-    /* Summery data from swim data */
-    public static int distanceSwum;
-    public static int allBurnKcal;
-    public static float allTimeSwum;
 
     InputStream inputStream;
 
@@ -80,7 +76,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //Log.d(TAG, "Test 1");
         listView = findViewById(R.id.fileList);
         fileArray = new ArrayList<String>();
         inputStream = null;
@@ -93,11 +88,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        //Log.i(TAG, "onResume");
-        if (Environment.isExternalStorageManager() == true) {
+
+        if (Environment.isExternalStorageManager() == true && Build.VERSION.SDK_INT >= 30) {
             createFolder();
             loadFiles();
-            //Log.i(TAG, "Create folder");
         }
     }
 
@@ -155,8 +149,9 @@ public class MainActivity extends AppCompatActivity {
     public void takeData(View view) throws IOException {
         // Update list of fit files
         loadFiles();
-        //testLoadFitFileList();
+
         LoadFitFileList();
+
         File file = new File(Environment.getExternalStorageDirectory(), folderName);
         if (!file.exists()){
             Toast.makeText(getApplicationContext(),
@@ -242,47 +237,25 @@ public class MainActivity extends AppCompatActivity {
         }
         inputStream.close();
         printData();
-        //testLoadFitFileList();
         fitFile.delete();
     }
 
     private void printData(){
         int tmpTrainingId = getLastIdInDatabase() + 1;
-        //String [] tmpData = new String [swimTableSize];
         for (int i = 0; i < dataCount; i++){
             saveFileData(tmpTrainingId, swimStorke[i],
                     activeLengthsSwimPool[i],
                     totalSwimDistance[i],
                     kcalSwim[i],
+                    swimTrainingDate[i],
                     elapsedTimeSwimming[i],
                     maxHeartRate[i],
                     avgHeartRate[i],
                     avarageSpeed[i],
                     avarageCadence[i]);
-            /*tmpData[i] = String.format(swimStorke[i] +
-                            ", " + activeLengthsSwimPool[i] +
-                            ", " + totalSwimDistance[i] +
-                            ", " + kcalSwim[i] +
-                            ", " + elapsedTimeSwimming[i] +
-                            ", " + maxHeartRate[i] +
-                            ", " + avgHeartRate[i] +
-                            ", " + avarageSpeed[i] +
-                            ", " + avarageCadence[i]
-                    );
-            distanceSwum += totalSwimDistance[i];
-            allBurnKcal += kcalSwim[i];
-            allTimeSwum += elapsedTimeSwimming[i];*/
-
         }
-        //for (int i = 0; i < dataCount; i++){ Log.d("DATA", tmpData[i]); }
-        //Log.d("SUMMARY DATA", "\nAll swum distance : " + distanceSwum + " [m] " + "\nAll burned kcal in training: " + allBurnKcal + " [kcal]" + "\nTime: " + allTimeSwum + " [min]");
-        //String tmp = String.format("Age: %s, Gender: %s, Height: %s, Weight: %s", userAge, userGender, userHeight, userWeight);
-        //Log.d("DATA", tmp);
         Log.d("DATA COUNT", String.valueOf(dataCount));
         dataCount = 0;
-        distanceSwum = 0;
-        allBurnKcal = 0;
-        allTimeSwum = 0;
     }
 
     private class StableArrayAdapter extends ArrayAdapter<String> {
@@ -317,6 +290,7 @@ public class MainActivity extends AppCompatActivity {
             int inputActiveLengthsSwimPoolDb,
             float inputTotalSwimDistanceDb,
             int inputKcalSwimDb,
+            DateTime inputSwimTrainingDateDb,
             float inputElapsedTimeSwimmingDb,
             int inputMaxHeartRateDb,
             int inputAvgHeartRateDb,
@@ -331,17 +305,13 @@ public class MainActivity extends AppCompatActivity {
         fitFile.activeLengthsSwimPoolDb = inputActiveLengthsSwimPoolDb;
         fitFile.totalSwimDistanceDb = inputTotalSwimDistanceDb;
         fitFile.kcalSwimDb = inputKcalSwimDb;
+        fitFile.swimTrainingDateDb = String.valueOf(inputSwimTrainingDateDb);
         fitFile.elapsedTimeSwimmingDb = inputElapsedTimeSwimmingDb;
         fitFile.maxHeartRateDb = inputMaxHeartRateDb;
         fitFile.avgHeartRateDb = inputAvgHeartRateDb;
         fitFile.avarageSpeedDb = inputAvarageSpeedDb;
         fitFile.avarageCadenceDb = inputAvarageCadenceDb;
-//        fitFile.distanceSwum = distanceSwum;
-//        fitFile.allBurnKcal = allBurnKcal;
-//        fitFile.allTimeSwum = allTimeSwum;
         database.fileDao().insertFile(fitFile);
-
-        //finish();
     }
 
     private void LoadFitFileList(){
@@ -357,6 +327,7 @@ public class MainActivity extends AppCompatActivity {
                         ", Lengths Swim Pool: " + fitFileList.get(i).activeLengthsSwimPoolDb +
                         ", Total Swim Distance: " + fitFileList.get(i).totalSwimDistanceDb +
                         ", Kcal:  " + fitFileList.get(i).kcalSwimDb +
+                        ", Date:  " + fitFileList.get(i).swimTrainingDateDb +
                         ", Elapsed Time:  " + showTimeSwim((int) fitFileList.get(i).elapsedTimeSwimmingDb) +
                         ", Max Heart Rate: " + fitFileList.get(i).maxHeartRateDb +
                         ", Min Heart Rate: " + fitFileList.get(i).avgHeartRateDb +
@@ -443,7 +414,7 @@ public class MainActivity extends AppCompatActivity {
                         //Maybe TO DO
                     }
                     if (mesg.getTimestamp() != null){
-                        //Maybe TO DO
+                        swimTrainingDate[dataCount - 1] = mesg.getTimestamp();
                     }
                     if (mesg.getTotalElapsedTime() != null){
                         elapsedTimeSwimming[dataCount - 1] = mesg.getTotalElapsedTime();
