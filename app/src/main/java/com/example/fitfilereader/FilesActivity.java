@@ -4,8 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
-import androidx.room.ColumnInfo;
 
 import android.Manifest;
 import android.content.Context;
@@ -18,7 +16,6 @@ import android.os.Environment;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -32,15 +29,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import com.garmin.fit.*;
-import com.garmin.fit.examples.DecodeExample;
 
-public class MainActivity extends AppCompatActivity {
+public class FilesActivity extends AppCompatActivity {
 
     private static final String TAG = "Test";
     private static final String folderName = "/Fit File Storage/";
@@ -74,7 +67,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_files);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         listView = findViewById(R.id.fileList);
         fileArray = new ArrayList<String>();
@@ -88,10 +83,15 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
-        if (Environment.isExternalStorageManager() == true && Build.VERSION.SDK_INT >= 30) {
-            createFolder();
-            loadFiles();
+        if(Build.VERSION.SDK_INT >= 30){
+            if (Environment.isExternalStorageManager() == true) {
+                createFolder();
+                loadFiles();
+            }
+        } else {
+            if(checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
+                createFolder();
+            }
         }
     }
 
@@ -180,7 +180,7 @@ public class MainActivity extends AppCompatActivity {
                         "Directory is created successfully.",
                         Toast.LENGTH_SHORT).show();
             } else {
-                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(FilesActivity.this);
                 String sMessage = "Message : failed to create directory" +
                         "\nPath :" + Environment.getExternalStorageDirectory() +
                         "\nmkdirs :" + file.mkdirs();
@@ -236,11 +236,11 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         inputStream.close();
-        printData();
+        saveOneTrainingToDatabase();
         fitFile.delete();
     }
 
-    private void printData(){
+    private void saveOneTrainingToDatabase(){
         int tmpTrainingId = getLastIdInDatabase() + 1;
         for (int i = 0; i < dataCount; i++){
             saveFileData(tmpTrainingId, swimStorke[i],
@@ -254,7 +254,6 @@ public class MainActivity extends AppCompatActivity {
                     avarageSpeed[i],
                     avarageCadence[i]);
         }
-        Log.d("DATA COUNT", String.valueOf(dataCount));
         dataCount = 0;
     }
 
@@ -350,7 +349,6 @@ public class MainActivity extends AppCompatActivity {
 
     private int getLastIdInDatabase(){
         FileDatabase database = FileDatabase.getDbInstance(this.getApplicationContext());
-        Log.d("LAST_ID", String.valueOf(database.fileDao().getLastID()));
         return database.fileDao().getLastID();
     }
 

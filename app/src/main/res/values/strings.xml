@@ -2,5 +2,13 @@
     <string name="app_name">fitFileReader</string>
     <string name="create_directory">Create Directory</string>
     <string name="take_data">Take Data</string>
+
+    <string name="general_statistic">General Statistic</string>
+    <string name="progres">Progres</string>
     <string name="files">Files</string>
+
+    <!--to toggle the open close button
+        of the navigation drawer-->
+    <string name="nav_open">Open</string>
+    <string name="nav_close">Close</string>
 </resources>

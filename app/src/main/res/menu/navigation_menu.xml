@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="HardcodedText">
+
+    <item
+        android:id="@+id/nav_general_statistic"
+        android:title="@string/general_statistic"
+        android:icon="@drawable/ic_baseline_signal_cellular_alt_40"/>
+
+    <item
+        android:id="@+id/nav_progres"
+        android:title="@string/progres"
+        android:icon="@drawable/ic_baseline_north_east_40"/>
+
+    <item
+        android:id="@+id/nav_files"
+        android:title="@string/files"
+        android:icon="@drawable/ic_baseline_folder_40"/>
+
+
+</menu>
