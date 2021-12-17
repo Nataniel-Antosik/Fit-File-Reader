@@ -28,6 +28,9 @@ public interface FileDao {
     @Query("SELECT SUM(kcal_swim) FROM fitFile WHERE training_id = :trainingIdToDatabase")
     int getTotalKcalSwim(int trainingIdToDatabase);
 
+    @Query("SELECT swim_training_date FROM fitFile WHERE training_id = :trainingIdToDatabase")
+    String getTrainingDate(int trainingIdToDatabase);
+
     @Insert
     void insertFile(FitFile... fitFiles);
 

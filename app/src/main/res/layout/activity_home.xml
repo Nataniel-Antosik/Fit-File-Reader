@@ -11,19 +11,10 @@
     tools:context=".HomeActivity"
     tools:ignore="HardcodedText">
 
-    <LinearLayout
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/mRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="128dp"
-            android:gravity="center"
-            android:text="Home Activity"
-            android:textSize="18sp" />
-
-    </LinearLayout>
+        android:layout_height="match_parent" />
 
     <com.google.android.material.navigation.NavigationView
         android:layout_width="wrap_content"
@@ -32,5 +23,7 @@
         android:id="@+id/nav_menu"
         app:menu="@menu/navigation_menu"
         app:itemTextAppearance="@style/NewFontStyle"/>
+
+
 
 </androidx.drawerlayout.widget.DrawerLayout>

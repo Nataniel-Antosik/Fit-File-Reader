@@ -28,7 +28,13 @@ import java.io.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.text.DateFormat;
+import java.text.Format;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import com.garmin.fit.*;
@@ -304,7 +310,7 @@ public class FilesActivity extends AppCompatActivity {
         fitFile.activeLengthsSwimPoolDb = inputActiveLengthsSwimPoolDb;
         fitFile.totalSwimDistanceDb = inputTotalSwimDistanceDb;
         fitFile.kcalSwimDb = inputKcalSwimDb;
-        fitFile.swimTrainingDateDb = String.valueOf(inputSwimTrainingDateDb);
+        fitFile.swimTrainingDateDb = converterDate(String.valueOf(inputSwimTrainingDateDb));
         fitFile.elapsedTimeSwimmingDb = inputElapsedTimeSwimmingDb;
         fitFile.maxHeartRateDb = inputMaxHeartRateDb;
         fitFile.avgHeartRateDb = inputAvgHeartRateDb;
@@ -337,11 +343,12 @@ public class FilesActivity extends AppCompatActivity {
             }
             for (int i = 1; i <= database.fileDao().getLastID(); i++){
                 String str2 = String.format(
-                        "Training ID: %s, Total Swum Distance: %s, Total Swum Time: %s, Total Burned Kcal: %s",
+                        "Training ID: %s, Total Swum Distance: %s, Total Swum Time: %s, Total Burned Kcal: %s, Training Date: %s",
                         i,
                         database.fileDao().getTotalSwumDistanceFile(i),
                         showTimeSwim(database.fileDao().getTotalSwumTimeSwum(i)),
-                        database.fileDao().getTotalKcalSwim(i));
+                        database.fileDao().getTotalKcalSwim(i),
+                        database.fileDao().getTrainingDate(i));
                 Log.d("DB SUMMARY", str2);
             }
         }
@@ -359,6 +366,40 @@ public class FilesActivity extends AppCompatActivity {
 
         String swimTime = String.format("%02d:%02d:%02d", hours, min, sec);
         return swimTime;
+    }
+
+    public String converterDate(String strDate) {
+        //String test = "Thu Oct 17 20:22:56 GMT+02:00 2019";
+        String [] arr = strDate.split("\\s+");
+
+        String newDateFormat = "";
+
+        if(arr[1].equals("Jan")){
+            newDateFormat = arr[arr.length-1] + "-" + "01" + "-"+ arr[2];
+        } else if(arr[1].equals("Feb")){
+            newDateFormat = arr[arr.length-1] + "-" + "02" + "-"+ arr[2];
+        } else if(arr[1].equals("Mar")){
+            newDateFormat = arr[arr.length-1] + "-" + "03" + "-"+ arr[2];
+        } else if(arr[1].equals("Apr")){
+            newDateFormat = arr[arr.length-1] + "-" + "04" + "-"+ arr[2];
+        } else if(arr[1].equals("May")){
+            newDateFormat = arr[arr.length-1] + "-" + "05" + "-"+ arr[2];
+        } else if(arr[1].equals("Jun")){
+            newDateFormat = arr[arr.length-1] + "-" + "06" + "-"+ arr[2];
+        } else if(arr[1].equals("Jul")){
+            newDateFormat = arr[arr.length-1] + "-" + "07" + "-"+ arr[2];
+        } else if(arr[1].equals("Aug")){
+            newDateFormat = arr[arr.length-1] + "-" + "08" + "-"+ arr[2];
+        } else if(arr[1].equals("Sep")){
+            newDateFormat = arr[arr.length-1] + "-" + "09" + "-"+ arr[2];
+        } else if(arr[1].equals("Oct")){
+            newDateFormat = arr[arr.length-1] + "-" + "10" + "-"+ arr[2];
+        } else if(arr[1].equals("Nov")){
+            newDateFormat = arr[arr.length-1] + "-" + "11" + "-"+ arr[2];
+        } else if(arr[1].equals("Dec")){
+            newDateFormat = arr[arr.length-1] + "/" + "12" + "/"+ arr[2];
+        }
+        return newDateFormat;
     }
 
     public static class Listener implements LapMesgListener, UserProfileMesgListener {

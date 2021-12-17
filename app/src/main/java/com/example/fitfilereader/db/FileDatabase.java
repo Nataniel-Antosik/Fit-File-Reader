@@ -5,7 +5,7 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-@Database(entities = {FitFile.class}, version = 1)
+@Database(entities = {FitFile.class}, version = 2)
 public abstract class FileDatabase extends RoomDatabase {
 
     public abstract FileDao fileDao();
