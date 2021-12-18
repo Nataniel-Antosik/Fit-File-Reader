@@ -15,7 +15,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.FitFileReader">
-
+        <activity android:name=".TrainingActivity"></activity>
         <activity
             android:name=".HomeActivity"
             android:screenOrientation="portrait">
@@ -25,15 +25,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".ProgresActivity"
+        <activity
+            android:name=".ProgresActivity"
             android:parentActivityName=".HomeActivity"
             android:screenOrientation="portrait" />
-
-        <activity android:name=".GeneralStatisticActivity"
+        <activity
+            android:name=".GeneralStatisticActivity"
             android:parentActivityName=".HomeActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".FilesActivity"
             android:parentActivityName=".HomeActivity"

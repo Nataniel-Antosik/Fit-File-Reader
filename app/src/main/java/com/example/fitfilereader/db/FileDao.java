@@ -28,6 +28,9 @@ public interface FileDao {
     @Query("SELECT SUM(kcal_swim) FROM fitFile WHERE training_id = :trainingIdToDatabase")
     int getTotalKcalSwim(int trainingIdToDatabase);
 
+    @Query("SELECT AVG(avarage_speed) FROM fitfile WHERE training_id = :trainingIdToDatabase AND swim_storke != 'BREAK'")
+    float getAvgPace(int trainingIdToDatabase);
+
     @Query("SELECT swim_training_date FROM fitFile WHERE training_id = :trainingIdToDatabase")
     String getTrainingDate(int trainingIdToDatabase);
 

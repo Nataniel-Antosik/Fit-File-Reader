@@ -6,7 +6,6 @@ public class TrainingModel {
     String trainingDistance;
     int id;
 
-
     public TrainingModel(String trainingData, String trainingPace, String trainingDistance, int id) {
         this.trainingData = trainingData;
         this.trainingPace = trainingPace;

@@ -24,7 +24,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, RecyclerViewInterface{
 
     ArrayList<TrainingModel> trainingModel = new ArrayList<>();
 
@@ -41,7 +41,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         setUpTrainingModels();
 
-        T_RecyclerViewAdapter adapter = new T_RecyclerViewAdapter(this, trainingModel);
+        T_RecyclerViewAdapter adapter = new T_RecyclerViewAdapter(this, trainingModel, this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -70,9 +70,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         } else {
             for (int i = 1; i <= database.fileDao().getLastID(); i++){
                 String strDistance = String.format("%s m", database.fileDao().getTotalSwumDistanceFile(i));
+                int secondPace = (int) (100 / database.fileDao().getAvgPace(i));
+                String strPace = String.format("%s/100 m", showPaceTimeSwim(secondPace));
                 tmp.add(new TrainingModel(
                         database.fileDao().getTrainingDate(i),
-                        String.valueOf(i),
+                        strPace,
                         strDistance,
                         i));
             }
@@ -98,6 +100,14 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         String newDateFormat = "";
         newDateFormat = arr[arr.length-1] + "/" + arr[1] + "/"+ arr[0];
         return newDateFormat;
+    }
+
+    private String showPaceTimeSwim(int seconds){
+        int sec = seconds % 60;
+        int min = (seconds % 3600) / 60;
+
+        String swimTime = String.format("%02d:%02d", min, sec);
+        return swimTime;
     }
 
     @Override
@@ -127,4 +137,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     return true;
     }
 
+    @Override
+    public void onItemClick(int position) {
+        Intent intent = new Intent(this, TrainingActivity.class);
+        intent.putExtra("ID_TRAINING", trainingModel.get(position).getId());
+        startActivity(intent);
+    }
 }

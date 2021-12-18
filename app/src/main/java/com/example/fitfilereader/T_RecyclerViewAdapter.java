@@ -13,12 +13,14 @@ import java.util.ArrayList;
 
 public class T_RecyclerViewAdapter extends RecyclerView.Adapter<T_RecyclerViewAdapter.MyViewHolder>{
 
+    private final RecyclerViewInterface recyclerViewInterface;
     Context context;
     ArrayList<TrainingModel> trainingModels;
 
-    public T_RecyclerViewAdapter(Context context, ArrayList<TrainingModel> trainingModels) {
+    public T_RecyclerViewAdapter(Context context, ArrayList<TrainingModel> trainingModels, RecyclerViewInterface recyclerViewInterface) {
         this.context = context;
         this.trainingModels = trainingModels;
+        this.recyclerViewInterface = recyclerViewInterface;
     }
 
     @NonNull
@@ -27,7 +29,7 @@ public class T_RecyclerViewAdapter extends RecyclerView.Adapter<T_RecyclerViewAd
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.recycler_view_row, parent, false);
 
-        return new T_RecyclerViewAdapter.MyViewHolder(view);
+        return new T_RecyclerViewAdapter.MyViewHolder(view, recyclerViewInterface);
     }
 
     @Override
@@ -46,12 +48,25 @@ public class T_RecyclerViewAdapter extends RecyclerView.Adapter<T_RecyclerViewAd
 
         TextView tData, tPace, tDistance;
 
-        public MyViewHolder(@NonNull View itemView) {
+        public MyViewHolder(@NonNull View itemView, RecyclerViewInterface recyclerViewInterface) {
             super(itemView);
             
             tData = itemView.findViewById(R.id.textViewTrainingData);
             tPace = itemView.findViewById(R.id.textViewTrainingPace);
             tDistance = itemView.findViewById(R.id.textViewTrainingDistance);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (recyclerViewInterface != null){
+                        int position = getAdapterPosition();
+
+                        if(position != RecyclerView.NO_POSITION){
+                            recyclerViewInterface.onItemClick(position);
+                        }
+                    }
+                }
+            });
         }
     }
 }
