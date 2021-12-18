@@ -6,13 +6,262 @@
     android:layout_height="match_parent"
     tools:context=".GeneralStatisticActivity">
 
+    <TableLayout
+        android:id="@+id/table_training_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.055">
+
+
+        <TableRow
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="30dp">
+
+            <TextView
+                android:id="@+id/text_view_training_best_on_100_m_header"
+                style="@style/TrainingHeaderFontStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/training_best_on_100_m_header" />
+
+        </TableRow>
+
+        <TableRow style="@style/NormalDataInRow">
+
+            <TextView
+                android:id="@+id/text_view_training_butterfly_best_header"
+                style="@style/NewFontStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/training_butterfly_header" />
+
+            <TextView
+                android:id="@+id/text_view_training_butterfly_best_data"
+                style="@style/NewFontStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Training Data" />
+
+        </TableRow>
+
+        <TableRow style="@style/NormalDataInRow">
+
+            <TextView
+                android:id="@+id/text_view_training_backstroke_best_header"
+                style="@style/NewFontStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/training_backstroke_header" />
+
+            <TextView
+                android:id="@+id/text_view_training_backstroke_best_data"
+                style="@style/NewFontStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Training Data" />
+
+        </TableRow>
+
+        <TableRow style="@style/NormalDataInRow">
+
+            <TextView
+                android:id="@+id/text_view_training_breaststroke_header"
+                style="@style/NewFontStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/training_breaststroke_header" />
+
+            <TextView
+                android:id="@+id/text_view_training_breaststroke_best_data"
+                style="@style/NewFontStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Training Data" />
+
+        </TableRow>
+
+        <TableRow style="@style/NormalDataInRow">
+
+            <TextView
+                android:id="@+id/text_view_training_freestyle_header"
+                style="@style/NewFontStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/training_freestyle_header" />
+
+            <TextView
+                android:id="@+id/text_view_training_freestyle_best_data"
+                style="@style/NewFontStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Training Data" />
+
+        </TableRow>
+
+    </TableLayout>
+
+
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/all_burn_kcal_data"
+        style="@style/TrainingHeaderFontStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="General Statistic Activity"
+        android:layout_marginBottom="448dp"
+        android:layout_weight="1"
+        android:text="Kcal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/table_training_layout"
+        app:layout_constraintVertical_bias="0.407" />
+
+
+    <ImageView
+        android:id="@+id/imageViewKcal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:layout_weight="1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.333"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/all_burn_kcal_data"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/ic_kcal" />
+
+    <TextView
+        android:id="@+id/all_burn_kcal"
+        style="@style/NewFontStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="left"
+        android:text="@string/all_burn_kcal"
+        android:layout_marginEnd="93dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imageViewKcal"
+        app:layout_constraintTop_toBottomOf="@+id/all_burn_kcal_data"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/all_swum_distance_data"
+        style="@style/TrainingHeaderFontStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:layout_weight="1"
+        android:text="Distance"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/all_burn_kcal"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <ImageView
+        android:id="@+id/imageViewDistance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:layout_marginEnd="130dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/all_trainings_data"
+        app:layout_constraintVertical_bias="0.003"
+        app:srcCompat="@drawable/ic_fale" />
+
+    <TextView
+        android:id="@+id/all_swum_distance"
+        style="@style/NewFontStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="64dp"
+        android:layout_marginBottom="364dp"
+        android:layout_weight="2"
+        android:gravity="left"
+        android:text="@string/all_swum_distance"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/imageViewTrainings"
+        app:layout_constraintTop_toBottomOf="@+id/all_swum_distance_data"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:id="@+id/all_trainings_data"
+        style="@style/TrainingHeaderFontStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_weight="1"
+        android:text="Distance"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/all_swum_distance"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <ImageView
+        android:id="@+id/imageViewTrainings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:layout_weight="1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.323"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/all_swum_distance_data"
+        app:layout_constraintVertical_bias="0.002"
+        app:srcCompat="@drawable/ic_swimmer_b_small" />
+
+    <TextView
+        android:id="@+id/all_trainings"
+        style="@style/NewFontStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="1dp"
+        android:layout_marginEnd="120dp"
+        android:layout_weight="1"
+        android:gravity="left"
+        android:text="@string/all_trainings"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.916"
+        app:layout_constraintStart_toEndOf="@+id/imageViewDistance"
+        app:layout_constraintTop_toBottomOf="@+id/all_trainings_data"
+        app:layout_constraintVertical_bias="0.003" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="@string/distance_graph"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/all_trainings"
+        app:layout_constraintVertical_bias="0.813" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

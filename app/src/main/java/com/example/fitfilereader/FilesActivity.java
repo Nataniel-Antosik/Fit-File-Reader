@@ -346,7 +346,7 @@ public class FilesActivity extends AppCompatActivity {
                         "Training ID: %s, Total Swum Distance: %s, Total Swum Time: %s, Total Burned Kcal: %s, Training Date: %s",
                         i,
                         database.fileDao().getTotalSwumDistanceFile(i),
-                        showTimeSwim(database.fileDao().getTotalSwumTimeSwum(i)),
+                        showTimeSwim(database.fileDao().getTotalSwumTime(i)),
                         database.fileDao().getTotalKcalSwim(i),
                         database.fileDao().getTrainingDate(i));
                 Log.d("DB SUMMARY", str2);

@@ -11,4 +11,29 @@
         of the navigation drawer-->
     <string name="nav_open">Open</string>
     <string name="nav_close">Close</string>
+
+    <string name="tabel_data_training">Table Data</string>
+
+    <!--headers to training data -->
+    <string name="training_calories_header">Calories</string>
+    <string name="training_distance_header">Distance</string>
+    <string name="training_avg_rate_header">Avg Rate</string>
+    <string name="training_max_rate_header">Max Rate</string>
+    <string name="training_moving_time_header">Moving time</string>
+    <string name="training_elapsed_time_header">Elapsed Time</string>
+    <string name="training_avg_pace_header">Avg pace</string>
+    <string name="training_best_pace_header">Best pace</string>
+    <string name="training_avg_cadence_header">Avg cadence</string>
+
+    <string name="training_avg_on_100_m_header">Avg pace on 100 m</string>
+    <string name="training_best_on_100_m_header">Best pace on 100 m</string>
+    <string name="training_butterfly_header">Butterfly</string>
+    <string name="training_backstroke_header">Backstroke</string>
+    <string name="training_breaststroke_header">Breaststroke</string>
+    <string name="training_freestyle_header">Freestyle</string>
+
+    <string name="distance_graph">Distance Graph</string>
+    <string name="all_burn_kcal">All burn kcal</string>
+    <string name="all_swum_distance">All swum distance</string>
+    <string name="all_trainings">All trainings</string>
 </resources>
