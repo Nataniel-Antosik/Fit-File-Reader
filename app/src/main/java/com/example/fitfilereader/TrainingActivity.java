@@ -4,6 +4,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,9 +16,18 @@ import com.example.fitfilereader.db.FileDatabase;
 import com.example.fitfilereader.db.FitFile;
 import com.example.fitfilereader.db.UserData;
 import com.example.fitfilereader.db.UserDatabase;
+import com.github.mikephil.charting.animation.Easing;
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.formatter.PercentFormatter;
+import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -34,6 +44,8 @@ public class TrainingActivity extends AppCompatActivity {
 
     TextView tvt_date, tvt_calories, tvt_distance, tvt_avg_rate, tvt_max_rate, tvt_moving_time, tvt_elapsed_time, tvt_avg_pace, tvt_best_pace, tvt_avg_cadence;
     TextView tvt_pace_on_butterfly, tvt_pace_on_backstroke, tvt_pace_on_breaststroke, tvt_pace_on_freestyle;
+
+    private PieChart pieChart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,8 +75,13 @@ public class TrainingActivity extends AppCompatActivity {
         tvt_pace_on_breaststroke = findViewById(R.id.text_view_training_breaststroke_data);
         tvt_pace_on_freestyle = findViewById(R.id.text_view_training_freestyle_data);
 
+        pieChart = findViewById(R.id.training_activity_pie_chart);
+
         trainingId = getIntent().getIntExtra("ID_TRAINING", 0);
         LoadTrainingData(trainingId);
+
+        setUpPieChart();
+        loadPieChartData();
     }
 
     private void LoadTrainingData(int trainingId){
@@ -232,5 +249,54 @@ public class TrainingActivity extends AppCompatActivity {
         } else if (heartRate >= ((int) (MHRIW * 0.91))) {
             VO2max += 1;
         }
+    }
+    private void setUpPieChart() {
+        pieChart.setDrawHoleEnabled(true);
+        pieChart.setUsePercentValues(true);
+        pieChart.setEntryLabelTextSize(12);
+        pieChart.setEntryLabelColor(Color.BLACK);
+        pieChart.setCenterText("Training by Category");
+        pieChart.setCenterTextSize(24);
+        pieChart.getDescription().setEnabled(false);
+
+        Legend l = pieChart.getLegend();
+        l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
+        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
+        l.setOrientation(Legend.LegendOrientation.VERTICAL);
+        l.setDrawInside(false);
+        l.setEnabled(true);
+    }
+
+    private void loadPieChartData() {
+        ArrayList<PieEntry> entries = new ArrayList<>();
+        entries.add(new PieEntry(warmUp, "Warm-Up"));
+        entries.add(new PieEntry(activeRegenerationZone, "Active Regeneration Zone"));
+        entries.add(new PieEntry(enduranceTraining, "Endurance Training"));
+        entries.add(new PieEntry(improvedCardiovascularPerformance, "Improved Cardiovascular Performance"));
+        entries.add(new PieEntry(lactateThreshold, "Lactate Threshold"));
+        entries.add(new PieEntry(VO2max, "VO2max"));
+
+        ArrayList<Integer> colors = new ArrayList<>();
+        for (int color: ColorTemplate.MATERIAL_COLORS) {
+            colors.add(color);
+        }
+
+        for (int color: ColorTemplate.VORDIPLOM_COLORS) {
+            colors.add(color);
+        }
+
+        PieDataSet dataSet = new PieDataSet(entries, "Training Zones");
+        dataSet.setColors(colors);
+
+        PieData data = new PieData(dataSet);
+        data.setDrawValues(true);
+        data.setValueFormatter(new PercentFormatter(pieChart)); //value 0.21
+        data.setValueTextSize(12f);
+        data.setValueTextColor(Color.BLACK);
+
+        pieChart.setData(data);
+        pieChart.invalidate();
+
+        pieChart.animateY(1400, Easing.EaseInOutQuad);
     }
 }

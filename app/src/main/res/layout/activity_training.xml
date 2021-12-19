@@ -7,379 +7,399 @@
     android:layout_height="match_parent"
     tools:context=".TrainingActivity">
 
-    <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/table_training_layout"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
-        <TableRow
-            android:layout_width="wrap_content"
+
+        <TableLayout
+            android:id="@+id/table_training_layout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
-            android:layout_marginEnd="30dp"
-            android:layout_marginTop="10dp">
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0">
 
-            <TextView
-                android:text="Training Data"
-                android:id="@+id/text_view_training_date"
+            <TableRow
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/NewFontStyle"
-                android:layout_weight="4" />
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="30dp">
 
-            <Button
-                android:text="@string/tabel_data_training"
+                <TextView
+                    android:id="@+id/text_view_training_date"
+                    style="@style/NewFontStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    android:text="Training Data" />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="runTableActivity"
+                    android:text="@string/tabel_data_training" />
+
+            </TableRow>
+
+            <TableRow
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:onClick="runTableActivity"/>
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="30dp">
 
-        </TableRow>
+                <TextView
+                    android:id="@+id/text_view_training_calories_header"
+                    style="@style/NewFontStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/training_calories_header" />
 
-        <TableRow
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
-            android:layout_marginEnd="30dp"
-            android:layout_marginTop="10dp">
+                <TextView
+                    android:id="@+id/text_view_training_calories_data"
+                    style="@style/NewFontStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Training Data" />
 
-            <TextView
-                android:text="@string/training_calories_header"
-                android:id="@+id/text_view_training_calories_header"
+            </TableRow>
+
+            <TableRow
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/NewFontStyle"
-                android:layout_weight="1" />
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="30dp">
 
-            <TextView
-                android:text="Training Data"
-                android:id="@+id/text_view_training_calories_data"
+                <TextView
+                    android:id="@+id/text_view_training_distance_header"
+                    style="@style/NewFontStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/training_distance_header" />
+
+                <TextView
+                    android:id="@+id/text_view_training_distance_data"
+                    style="@style/NewFontStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Training Data" />
+
+            </TableRow>
+
+            <TableRow
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/NewFontStyle"
-                android:layout_weight="1" />
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="30dp">
 
-        </TableRow>
+                <TextView
+                    android:id="@+id/text_view_training_avg_rate_header"
+                    style="@style/NewFontStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/training_avg_rate_header" />
 
-        <TableRow
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
-            android:layout_marginEnd="30dp"
-            android:layout_marginTop="10dp">
+                <TextView
+                    android:id="@+id/text_view_training_avg_rate_data"
+                    style="@style/NewFontStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Training Data" />
 
-            <TextView
-                android:text="@string/training_distance_header"
-                android:id="@+id/text_view_training_distance_header"
+            </TableRow>
+
+            <TableRow
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/NewFontStyle"
-                android:layout_weight="1" />
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="30dp">
 
-            <TextView
-                android:text="Training Data"
-                android:id="@+id/text_view_training_distance_data"
+                <TextView
+                    android:id="@+id/text_view_training_max_rate_header"
+                    style="@style/NewFontStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/training_max_rate_header" />
+
+                <TextView
+                    android:id="@+id/text_view_training_max_rate_data"
+                    style="@style/NewFontStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Training Data" />
+
+            </TableRow>
+
+            <TableRow
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/NewFontStyle"
-                android:layout_weight="1" />
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="30dp">
 
-        </TableRow>
+                <TextView
+                    android:id="@+id/text_view_training_moving_time_header"
+                    style="@style/NewFontStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/training_moving_time_header" />
 
-        <TableRow
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
-            android:layout_marginEnd="30dp"
-            android:layout_marginTop="10dp">
+                <TextView
+                    android:id="@+id/text_view_training_moving_time_data"
+                    style="@style/NewFontStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Training Data" />
 
-            <TextView
-                android:text="@string/training_avg_rate_header"
-                android:id="@+id/text_view_training_avg_rate_header"
+            </TableRow>
+
+            <TableRow
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/NewFontStyle"
-                android:layout_weight="1" />
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="30dp">
 
-            <TextView
-                android:text="Training Data"
-                android:id="@+id/text_view_training_avg_rate_data"
+                <TextView
+                    android:id="@+id/text_view_training_elapsed_time_header"
+                    style="@style/NewFontStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/training_elapsed_time_header" />
+
+                <TextView
+                    android:id="@+id/text_view_training_elapsed_time_data"
+                    style="@style/NewFontStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Training Data" />
+
+            </TableRow>
+
+            <TableRow
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/NewFontStyle"
-                android:layout_weight="1" />
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="30dp">
 
-        </TableRow>
+                <TextView
+                    android:id="@+id/text_view_training_avg_pace_header"
+                    style="@style/NewFontStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/training_avg_pace_header" />
 
-        <TableRow
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
-            android:layout_marginEnd="30dp"
-            android:layout_marginTop="10dp">
+                <TextView
+                    android:id="@+id/text_view_training_avg_pace_data"
+                    style="@style/NewFontStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Training Data" />
 
-            <TextView
-                android:text="@string/training_max_rate_header"
-                android:id="@+id/text_view_training_max_rate_header"
+            </TableRow>
+
+            <TableRow
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/NewFontStyle"
-                android:layout_weight="1" />
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="30dp">
 
-            <TextView
-                android:text="Training Data"
-                android:id="@+id/text_view_training_max_rate_data"
+                <TextView
+                    android:id="@+id/text_view_training_best_pace_header"
+                    style="@style/NewFontStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/training_best_pace_header" />
+
+                <TextView
+                    android:id="@+id/text_view_training_best_pace_data"
+                    style="@style/NewFontStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Training Data" />
+
+            </TableRow>
+
+            <TableRow
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/NewFontStyle"
-                android:layout_weight="1" />
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="30dp">
 
-        </TableRow>
+                <TextView
+                    android:id="@+id/text_view_training_avg_cadence_header"
+                    style="@style/NewFontStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/training_avg_cadence_header" />
 
-        <TableRow
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
-            android:layout_marginEnd="30dp"
-            android:layout_marginTop="10dp">
+                <TextView
+                    android:id="@+id/text_view_training_avg_cadence_data"
+                    style="@style/NewFontStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Training Data" />
 
-            <TextView
-                android:text="@string/training_moving_time_header"
-                android:id="@+id/text_view_training_moving_time_header"
+            </TableRow>
+
+            <TableRow
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/NewFontStyle"
-                android:layout_weight="1" />
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="30dp">
 
-            <TextView
-                android:text="Training Data"
-                android:id="@+id/text_view_training_moving_time_data"
+                <TextView
+                    android:id="@+id/text_view_training_avg_on_100_m_header"
+                    style="@style/TrainingHeaderFontStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/training_avg_on_100_m_header" />
+
+            </TableRow>
+
+            <TableRow
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/NewFontStyle"
-                android:layout_weight="1" />
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="30dp">
 
-        </TableRow>
+                <TextView
+                    android:id="@+id/text_view_training_butterfly_header"
+                    style="@style/NewFontStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/training_butterfly_header" />
 
-        <TableRow
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
-            android:layout_marginEnd="30dp"
-            android:layout_marginTop="10dp">
+                <TextView
+                    android:id="@+id/text_view_training_butterfly_data"
+                    style="@style/NewFontStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Training Data" />
 
-            <TextView
-                android:text="@string/training_elapsed_time_header"
-                android:id="@+id/text_view_training_elapsed_time_header"
+            </TableRow>
+
+            <TableRow
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/NewFontStyle"
-                android:layout_weight="1" />
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="30dp">
 
-            <TextView
-                android:text="Training Data"
-                android:id="@+id/text_view_training_elapsed_time_data"
+                <TextView
+                    android:id="@+id/text_view_training_backstroke_header"
+                    style="@style/NewFontStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/training_backstroke_header" />
+
+                <TextView
+                    android:id="@+id/text_view_training_backstroke_data"
+                    style="@style/NewFontStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Training Data" />
+
+            </TableRow>
+
+            <TableRow
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/NewFontStyle"
-                android:layout_weight="1" />
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="30dp">
 
-        </TableRow>
+                <TextView
+                    android:id="@+id/text_view_training_breaststroke_header"
+                    style="@style/NewFontStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/training_breaststroke_header" />
 
-        <TableRow
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
-            android:layout_marginEnd="30dp"
-            android:layout_marginTop="10dp">
+                <TextView
+                    android:id="@+id/text_view_training_breaststroke_data"
+                    style="@style/NewFontStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Training Data" />
 
-            <TextView
-                android:text="@string/training_avg_pace_header"
-                android:id="@+id/text_view_training_avg_pace_header"
+            </TableRow>
+
+            <TableRow
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/NewFontStyle"
-                android:layout_weight="1" />
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="30dp">
 
-            <TextView
-                android:text="Training Data"
-                android:id="@+id/text_view_training_avg_pace_data"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/NewFontStyle"
-                android:layout_weight="1" />
+                <TextView
+                    android:id="@+id/text_view_training_freestyle_header"
+                    style="@style/NewFontStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/training_freestyle_header" />
 
-        </TableRow>
+                <TextView
+                    android:id="@+id/text_view_training_freestyle_data"
+                    style="@style/NewFontStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Training Data" />
 
-        <TableRow
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
-            android:layout_marginEnd="30dp"
-            android:layout_marginTop="10dp">
+            </TableRow>
+        </TableLayout>
 
-            <TextView
-                android:text="@string/training_best_pace_header"
-                android:id="@+id/text_view_training_best_pace_header"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/NewFontStyle"
-                android:layout_weight="1" />
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/training_activity_pie_chart"
+            android:layout_width="match_parent"
+            android:layout_height="620dp"
+            android:text="TextView"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/table_training_layout" />
 
-            <TextView
-                android:text="Training Data"
-                android:id="@+id/text_view_training_best_pace_data"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/NewFontStyle"
-                android:layout_weight="1" />
-
-        </TableRow>
-
-        <TableRow
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
-            android:layout_marginEnd="30dp"
-            android:layout_marginTop="10dp">
-
-            <TextView
-                android:text="@string/training_avg_cadence_header"
-                android:id="@+id/text_view_training_avg_cadence_header"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/NewFontStyle"
-                android:layout_weight="1" />
-
-            <TextView
-                android:text="Training Data"
-                android:id="@+id/text_view_training_avg_cadence_data"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/NewFontStyle"
-                android:layout_weight="1" />
-
-        </TableRow>
-
-        <TableRow
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
-            android:layout_marginEnd="30dp"
-            android:layout_marginTop="10dp">
-
-            <TextView
-                android:text="@string/training_avg_on_100_m_header"
-                android:id="@+id/text_view_training_avg_on_100_m_header"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                style="@style/TrainingHeaderFontStyle"
-                android:layout_weight="1" />
-
-        </TableRow>
-
-        <TableRow
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
-            android:layout_marginEnd="30dp"
-            android:layout_marginTop="10dp">
-
-            <TextView
-                android:text="@string/training_butterfly_header"
-                android:id="@+id/text_view_training_butterfly_header"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/NewFontStyle"
-                android:layout_weight="1" />
-
-            <TextView
-                android:text="Training Data"
-                android:id="@+id/text_view_training_butterfly_data"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/NewFontStyle"
-                android:layout_weight="1" />
-
-        </TableRow>
-
-        <TableRow
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
-            android:layout_marginEnd="30dp"
-            android:layout_marginTop="10dp">
-
-            <TextView
-                android:text="@string/training_backstroke_header"
-                android:id="@+id/text_view_training_backstroke_header"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/NewFontStyle"
-                android:layout_weight="1" />
-
-            <TextView
-                android:text="Training Data"
-                android:id="@+id/text_view_training_backstroke_data"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/NewFontStyle"
-                android:layout_weight="1" />
-
-        </TableRow>
-
-        <TableRow
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
-            android:layout_marginEnd="30dp"
-            android:layout_marginTop="10dp">
-
-            <TextView
-                android:text="@string/training_breaststroke_header"
-                android:id="@+id/text_view_training_breaststroke_header"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/NewFontStyle"
-                android:layout_weight="1" />
-
-            <TextView
-                android:text="Training Data"
-                android:id="@+id/text_view_training_breaststroke_data"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/NewFontStyle"
-                android:layout_weight="1" />
-
-        </TableRow>
-
-        <TableRow
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
-            android:layout_marginEnd="30dp"
-            android:layout_marginTop="10dp">
-
-            <TextView
-                android:text="@string/training_freestyle_header"
-                android:id="@+id/text_view_training_freestyle_header"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/NewFontStyle"
-                android:layout_weight="1" />
-
-            <TextView
-                android:text="Training Data"
-                android:id="@+id/text_view_training_freestyle_data"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/NewFontStyle"
-                android:layout_weight="1" />
-
-        </TableRow>
-
-
-
-    </TableLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
