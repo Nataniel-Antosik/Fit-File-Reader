@@ -36,4 +36,7 @@
     <string name="all_burn_kcal">All burn kcal</string>
     <string name="all_swum_distance">All swum distance</string>
     <string name="all_trainings">All trainings</string>
+
+    <string name="select_your_birthday_date">Click Here To Select Your Birthday Date</string>
+
 </resources>

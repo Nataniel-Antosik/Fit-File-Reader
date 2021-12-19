@@ -22,6 +22,9 @@ import android.widget.Toast;
 
 import com.example.fitfilereader.db.FileDatabase;
 import com.example.fitfilereader.db.FitFile;
+import com.example.fitfilereader.db.UserDao;
+import com.example.fitfilereader.db.UserData;
+import com.example.fitfilereader.db.UserDatabase;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.io.*;
@@ -32,6 +35,8 @@ import java.text.DateFormat;
 import java.text.Format;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -46,15 +51,9 @@ public class FilesActivity extends AppCompatActivity {
 
     public static int swimTableSize = 200;
     public static int dataCount = 0;
-    public static int userAge;
 
     ArrayList<String> fileArray;
     ListView listView;
-
-    public static float userWeight;
-    public static float userHeight;
-
-    public static String userGender;
 
     /* Tabels for swim data */
     public static String [] swimStorke = new String [swimTableSize];
@@ -82,7 +81,6 @@ public class FilesActivity extends AppCompatActivity {
         inputStream = null;
         checkPermission();
         loadFiles();
-
     }
 
     @RequiresApi(api = Build.VERSION_CODES.R)
@@ -156,7 +154,7 @@ public class FilesActivity extends AppCompatActivity {
         // Update list of fit files
         loadFiles();
 
-        LoadFitFileList();
+        //LoadFitFileList();
 
         File file = new File(Environment.getExternalStorageDirectory(), folderName);
         if (!file.exists()){
@@ -248,8 +246,11 @@ public class FilesActivity extends AppCompatActivity {
 
     private void saveOneTrainingToDatabase(){
         int tmpTrainingId = getLastIdInDatabase() + 1;
+        int userAge = 0;
         for (int i = 0; i < dataCount; i++){
-            saveFileData(tmpTrainingId, swimStorke[i],
+            saveFileData(
+                    tmpTrainingId,
+                    swimStorke[i],
                     activeLengthsSwimPool[i],
                     totalSwimDistance[i],
                     kcalSwim[i],
@@ -258,7 +259,8 @@ public class FilesActivity extends AppCompatActivity {
                     maxHeartRate[i],
                     avgHeartRate[i],
                     avarageSpeed[i],
-                    avarageCadence[i]);
+                    avarageCadence[i],
+                    userAge);
         }
         dataCount = 0;
     }
@@ -300,7 +302,8 @@ public class FilesActivity extends AppCompatActivity {
             int inputMaxHeartRateDb,
             int inputAvgHeartRateDb,
             float inputAvarageSpeedDb,
-            int inputAvarageCadenceDb) {
+            int inputAvarageCadenceDb,
+            int inputUserAge) {
 
         FileDatabase database = FileDatabase.getDbInstance(this.getApplicationContext());
 
@@ -316,6 +319,7 @@ public class FilesActivity extends AppCompatActivity {
         fitFile.avgHeartRateDb = inputAvgHeartRateDb;
         fitFile.avarageSpeedDb = inputAvarageSpeedDb;
         fitFile.avarageCadenceDb = inputAvarageCadenceDb;
+        fitFile.userAge = inputUserAge;
         database.fileDao().insertFile(fitFile);
     }
 
@@ -407,24 +411,9 @@ public class FilesActivity extends AppCompatActivity {
         @Override
         public void onMesg(UserProfileMesg mesg) {
         // User Profile Mesg Listener
-            if (mesg.getGender() != null) {
-                if (mesg.getGender() == Gender.MALE) {
-                    userGender = "Male";
-                } else if (mesg.getGender() == Gender.FEMALE) {
-                    userGender = "Female";
-                }
-            }
 
             if (mesg.getAge() != null) {
-                userAge = mesg.getAge();
-            }
-
-            if (mesg.getWeight() != null) {
-                userWeight = mesg.getWeight();
-            }
-
-            if (mesg.getHeight() != null){
-                userHeight = mesg.getHeight();
+                //userAge = mesg.getAge();
             }
         }
 

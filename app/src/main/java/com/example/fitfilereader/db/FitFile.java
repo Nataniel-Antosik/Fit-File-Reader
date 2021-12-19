@@ -45,4 +45,7 @@ public class FitFile {
     @ColumnInfo(name = "avarage_cadence")
     public int avarageCadenceDb;
 
+    @ColumnInfo(name = "user_age")
+    public int userAge;
+
 }

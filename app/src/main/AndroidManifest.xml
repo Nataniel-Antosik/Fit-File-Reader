@@ -25,9 +25,16 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".TrainingActivity"
+            android:name=".BirthdayActivity"
             android:screenOrientation="portrait">
         </activity>
+        <activity
+            android:name=".TableActivity"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name=".TrainingActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ProgresActivity"
             android:parentActivityName=".HomeActivity"

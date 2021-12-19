@@ -17,6 +17,8 @@ import android.widget.Toast;
 
 import com.example.fitfilereader.db.FileDatabase;
 import com.example.fitfilereader.db.FitFile;
+import com.example.fitfilereader.db.UserData;
+import com.example.fitfilereader.db.UserDatabase;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
@@ -38,6 +40,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_home);
 
         RecyclerView recyclerView = findViewById(R.id.mRecyclerView);
+
+        setUpUserBirthdayDate();
 
         setUpTrainingModels();
 
@@ -142,5 +146,15 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         Intent intent = new Intent(this, TrainingActivity.class);
         intent.putExtra("ID_TRAINING", trainingModel.get(position).getId());
         startActivity(intent);
+    }
+
+    public void setUpUserBirthdayDate(){
+        UserDatabase database = UserDatabase.getDbInstance(this.getApplicationContext());
+        List<UserData> userFileList = database.userDao().getAllBirthdayDate();
+
+        if(userFileList.size() == 0){
+            Intent intent = new Intent(this, BirthdayActivity.class);
+            startActivity(intent);
+        }
     }
 }

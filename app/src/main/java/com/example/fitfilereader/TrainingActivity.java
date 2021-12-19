@@ -1,19 +1,37 @@
 package com.example.fitfilereader;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.fitfilereader.db.FileDatabase;
 import com.example.fitfilereader.db.FitFile;
+import com.example.fitfilereader.db.UserData;
+import com.example.fitfilereader.db.UserDatabase;
 
+import java.time.LocalDate;
+import java.time.Period;
+import java.util.Calendar;
 import java.util.List;
 
 public class TrainingActivity extends AppCompatActivity {
 
     int trainingId;
+
+    private static int warmUp;
+    private static int activeRegenerationZone;
+    private static int enduranceTraining;
+    private static int improvedCardiovascularPerformance;
+    private static int lactateThreshold;
+    private static int VO2max;
+
     TextView tvt_date, tvt_calories, tvt_distance, tvt_avg_rate, tvt_max_rate, tvt_moving_time, tvt_elapsed_time, tvt_avg_pace, tvt_best_pace, tvt_avg_cadence;
     TextView tvt_pace_on_butterfly, tvt_pace_on_backstroke, tvt_pace_on_breaststroke, tvt_pace_on_freestyle;
 
@@ -21,6 +39,13 @@ public class TrainingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_training);
+
+        warmUp = 0;
+        activeRegenerationZone = 0;
+        enduranceTraining = 0;
+        improvedCardiovascularPerformance = 0;
+        lactateThreshold = 0;
+        VO2max = 0;
 
         tvt_date = findViewById(R.id.text_view_training_date);
         tvt_calories = findViewById(R.id.text_view_training_calories_data);
@@ -43,12 +68,16 @@ public class TrainingActivity extends AppCompatActivity {
     }
 
     private void LoadTrainingData(int trainingId){
+
         FileDatabase database = FileDatabase.getDbInstance(this.getApplicationContext());
+        UserDatabase userDatabase = UserDatabase.getDbInstance(this.getApplicationContext());
+
         List<FitFile> fitFileList = database.fileDao().getOneTraining(trainingId);
 
         if(fitFileList.isEmpty()){
             Log.d("DATABASE", "Is Empty");
         } else {
+            String age = "0";
 
             String strKcal = String.format("%s kcal", database.fileDao().getTotalKcalSwim(trainingId));
             String strDistance = String.format("%s m", database.fileDao().getTotalSwumDistanceFile(trainingId));
@@ -91,6 +120,19 @@ public class TrainingActivity extends AppCompatActivity {
                 String strPaceFreestyle = String.format("%s/100m", showPaceTimeSwim((int) (100 / database.fileDao().getAvgPaceOnFreestyle(trainingId))));
                 tvt_pace_on_freestyle.setText(strPaceFreestyle);
             }
+
+            age = splitDateAndGetAge(userDatabase.userDao().getUserBirthdayDate(), correctDate(database.fileDao().getTrainingDate(trainingId)));
+
+            for (int i = 0; i < fitFileList.size(); i++) {
+                typeOfTraining(Integer.parseInt(age), fitFileList.get(i).avgHeartRateDb);
+            }
+
+            Log.d("WARM-UP", String.valueOf(warmUp));
+            Log.d("ACTI REG ZONE", String.valueOf(activeRegenerationZone));
+            Log.d("ENDU TRAIN", String.valueOf(enduranceTraining));
+            Log.d("IMPRO CARD PERF", String.valueOf(improvedCardiovascularPerformance));
+            Log.d("LACT THRES", String.valueOf(lactateThreshold));
+            Log.d("VOL2MAX", String.valueOf(VO2max));
         }
     }
 
@@ -116,5 +158,79 @@ public class TrainingActivity extends AppCompatActivity {
 
         String swimTime = String.format("%02d:%02d", min, sec);
         return swimTime;
+    }
+
+    public void runTableActivity(View view){
+        Intent intent = new Intent(this, TableActivity.class);
+        intent.putExtra("ID_TRAINING", trainingId);
+        startActivity(intent);
+    }
+
+    public static String splitDateAndGetAge(String strBirthdate, String strDate){
+        String age = "0";
+
+        String [] arr = strBirthdate.split("-");
+        String [] arr2 = strDate.split("/");
+
+        int year = Integer.parseInt(arr[0]);
+        int month = Integer.parseInt(arr[1]);
+        int day = Integer.parseInt(arr[arr.length-1]);
+
+        int yearTraining = Integer.parseInt(arr2[arr.length-1]);
+        int monthTraining = Integer.parseInt(arr2[1]);
+        int dayTraining = Integer.parseInt(arr2[0]);
+
+        age = getAge(year, month, day, yearTraining, monthTraining, dayTraining);
+
+        return age;
+    }
+
+    private static String getAge(int year, int month, int day, int yearTraining, int monthTraining, int dayTraining){
+        Calendar birthdate = Calendar.getInstance();
+        Calendar trainingDate = Calendar.getInstance();
+
+        birthdate.set(year, month, day);
+        trainingDate.set(yearTraining, monthTraining, dayTraining);
+
+        int age = trainingDate.get(Calendar.YEAR) - birthdate.get(Calendar.YEAR);
+
+        if (trainingDate.get(Calendar.DAY_OF_YEAR) < birthdate.get(Calendar.DAY_OF_YEAR)){
+            age--;
+        }
+
+        Integer ageInt = new Integer(age);
+        String ageS = ageInt.toString();
+
+        return ageS;
+    }
+
+    public static int maxHeartRateInWater(int age) {
+        int maxHeartRateInWater = 0;
+        int waterDifference = 7;
+        maxHeartRateInWater = 220 - age - waterDifference;
+        return maxHeartRateInWater;
+    }
+
+    public static int maxHeartRate(int age) {
+        int maxHeartRate = 0;
+        maxHeartRate = 220 - age;
+        return maxHeartRate;
+    }
+
+    public static void typeOfTraining(int age, int heartRate){
+        int MHRIW = maxHeartRateInWater(age);
+        if(heartRate < (int) (MHRIW * 0.60)) {
+            warmUp += 1;
+        } else if (heartRate >= ((int) (MHRIW * 0.60)) && heartRate <= ((int) (MHRIW * 0.65))) {
+            activeRegenerationZone += 1;
+        } else if (heartRate >= ((int) (MHRIW * 0.66)) && heartRate <= ((int) (MHRIW * 0.72))) {
+            enduranceTraining += 1;
+        } else if (heartRate >= ((int) (MHRIW * 0.73)) && heartRate <= ((int) (MHRIW * 0.83))) {
+            improvedCardiovascularPerformance += 1;
+        } else if (heartRate >= ((int) (MHRIW * 0.84)) && heartRate <= ((int) (MHRIW * 0.90))) {
+            lactateThreshold += 1;
+        } else if (heartRate >= ((int) (MHRIW * 0.91))) {
+            VO2max += 1;
+        }
     }
 }
