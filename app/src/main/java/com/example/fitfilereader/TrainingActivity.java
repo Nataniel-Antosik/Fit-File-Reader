@@ -17,8 +17,12 @@ import com.example.fitfilereader.db.FitFile;
 import com.example.fitfilereader.db.UserData;
 import com.example.fitfilereader.db.UserDatabase;
 import com.github.mikephil.charting.animation.Easing;
+import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
@@ -46,6 +50,7 @@ public class TrainingActivity extends AppCompatActivity {
     TextView tvt_pace_on_butterfly, tvt_pace_on_backstroke, tvt_pace_on_breaststroke, tvt_pace_on_freestyle;
 
     private PieChart pieChart;
+    private BarChart barChartHeartRate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,12 +81,15 @@ public class TrainingActivity extends AppCompatActivity {
         tvt_pace_on_freestyle = findViewById(R.id.text_view_training_freestyle_data);
 
         pieChart = findViewById(R.id.training_activity_pie_chart);
+        barChartHeartRate = findViewById(R.id.training_activity_bar_chart_heart_rate);
 
         trainingId = getIntent().getIntExtra("ID_TRAINING", 0);
         LoadTrainingData(trainingId);
 
         setUpPieChart();
         loadPieChartData();
+        loadBarChartHeartRate();
+
     }
 
     private void LoadTrainingData(int trainingId){
@@ -250,6 +258,7 @@ public class TrainingActivity extends AppCompatActivity {
             VO2max += 1;
         }
     }
+
     private void setUpPieChart() {
         pieChart.setDrawHoleEnabled(true);
         pieChart.setUsePercentValues(true);
@@ -269,12 +278,24 @@ public class TrainingActivity extends AppCompatActivity {
 
     private void loadPieChartData() {
         ArrayList<PieEntry> entries = new ArrayList<>();
-        entries.add(new PieEntry(warmUp, "Warm-Up"));
-        entries.add(new PieEntry(activeRegenerationZone, "Active Regeneration Zone"));
-        entries.add(new PieEntry(enduranceTraining, "Endurance Training"));
-        entries.add(new PieEntry(improvedCardiovascularPerformance, "Improved Cardiovascular Performance"));
-        entries.add(new PieEntry(lactateThreshold, "Lactate Threshold"));
-        entries.add(new PieEntry(VO2max, "VO2max"));
+        if (warmUp != 0)
+            entries.add(new PieEntry(warmUp, "Warm-Up"));
+
+        if (activeRegenerationZone != 0)
+            entries.add(new PieEntry(activeRegenerationZone, "Active Regeneration Zone"));
+
+        if (enduranceTraining != 0)
+            entries.add(new PieEntry(enduranceTraining, "Endurance Training"));
+
+        if (improvedCardiovascularPerformance != 0)
+            entries.add(new PieEntry(improvedCardiovascularPerformance, "Improved Cardiovascular Performance"));
+
+        if (lactateThreshold != 0)
+            entries.add(new PieEntry(lactateThreshold, "Lactate Threshold"));
+
+        if (VO2max != 0)
+            entries.add(new PieEntry(VO2max, "VO2max"));
+
 
         ArrayList<Integer> colors = new ArrayList<>();
         for (int color: ColorTemplate.MATERIAL_COLORS) {
@@ -298,5 +319,29 @@ public class TrainingActivity extends AppCompatActivity {
         pieChart.invalidate();
 
         pieChart.animateY(1400, Easing.EaseInOutQuad);
+    }
+
+    private void loadBarChartHeartRate() {
+        FileDatabase database = FileDatabase.getDbInstance(this.getApplicationContext());
+
+        List<FitFile> fitFileList = database.fileDao().getOneTraining(trainingId);
+
+        ArrayList<BarEntry> entriesPace = new ArrayList<>();
+
+        for (int i = 0; i < fitFileList.size(); i++){
+            entriesPace.add(new BarEntry(i + 1, fitFileList.get(i).avgHeartRateDb));
+        }
+
+        BarDataSet barDataSet = new BarDataSet(entriesPace, "Heart Rate");
+        barDataSet.setColors(ColorTemplate.MATERIAL_COLORS);
+        barDataSet.setValueTextColor(Color.BLACK);
+        barDataSet.setValueTextSize(16f);
+
+        BarData barData = new BarData(barDataSet);
+
+        barChartHeartRate.setFitBars(true);
+        barChartHeartRate.setData(barData);
+        barChartHeartRate.getDescription().setText("Bar Chart Heart Rate");
+        barChartHeartRate.animateY(2000);
     }
 }

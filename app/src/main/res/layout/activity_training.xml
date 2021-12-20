@@ -391,15 +391,53 @@
             </TableRow>
         </TableLayout>
 
+        <TextView
+            android:id="@+id/text_view_pie_chart_active_zone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/pie_chart_active_zone"
+            android:layout_marginTop="10dp"
+            style="@style/chart_header"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/table_training_layout"
+            app:layout_constraintVertical_bias="0.0" />
+
         <com.github.mikephil.charting.charts.PieChart
             android:id="@+id/training_activity_pie_chart"
             android:layout_width="match_parent"
             android:layout_height="620dp"
-            android:text="TextView"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_view_pie_chart_active_zone"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <TextView
+            android:id="@+id/text_view_bar_chart_heart_rate_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/bar_chart_heart_rate_header"
+            style="@style/chart_header"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/training_activity_pie_chart"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/training_activity_bar_chart_heart_rate"
+            android:layout_width="match_parent"
+            android:layout_height="620dp"
+            android:layout_marginTop="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/table_training_layout" />
+            app:layout_constraintTop_toBottomOf="@+id/text_view_bar_chart_heart_rate_header"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
