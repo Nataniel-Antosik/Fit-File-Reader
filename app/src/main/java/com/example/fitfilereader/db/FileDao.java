@@ -70,6 +70,9 @@ public interface FileDao {
     @Query("SELECT MAX(avarage_speed) FROM fitfile WHERE swim_storke == 'FREESTYLE'")
     float getBestPaceFreestyle();
 
+    @Query("SELECT * FROM fitfile WHERE training_id = :trainingIdToDatabase AND swim_storke != 'BREAK'")
+    List<FitFile> getOneTrainingWithoutBreak(int trainingIdToDatabase);
+
     @Query("SELECT SUM(kcal_swim) FROM fitfile")
     int getAllBurnedKcal();
 

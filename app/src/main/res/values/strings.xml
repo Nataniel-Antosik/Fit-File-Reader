@@ -40,5 +40,7 @@
     <string name="select_your_birthday_date">Click Here To Select Your Birthday Date</string>
     <string name="bar_chart_heart_rate_header">Heart Rate In Intervals</string>
     <string name="pie_chart_active_zone">Training Zones</string>
+    <string name="bar_chart_avg_speed_m_s_header">Average Speed m/s In Intervals</string>
+    <string name="bar_chart_avg_cadence_header">Average Cadence In Intervals</string>
 
 </resources>

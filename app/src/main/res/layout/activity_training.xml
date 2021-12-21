@@ -436,8 +436,60 @@
             android:layout_marginTop="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_view_bar_chart_heart_rate_header"/>
+            app:layout_constraintTop_toBottomOf="@+id/text_view_bar_chart_heart_rate_header"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <TextView
+            android:id="@+id/text_view_bar_chart_avg_speed_m_s"
+            style="@style/chart_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/bar_chart_avg_speed_m_s_header"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.526"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/training_activity_bar_chart_heart_rate"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/training_activity_bar_chart_avg_speed_m_s"
+            android:layout_width="match_parent"
+            android:layout_height="620dp"
+            android:layout_marginTop="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_view_bar_chart_avg_speed_m_s"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <TextView
+            android:id="@+id/text_view_bar_chart_avg_cadence"
+            style="@style/chart_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/bar_chart_avg_cadence_header"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.526"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/training_activity_bar_chart_avg_speed_m_s"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/training_activity_bar_chart_avg_cadence"
+            android:layout_width="match_parent"
+            android:layout_height="620dp"
+            android:layout_marginTop="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_view_bar_chart_avg_cadence"
+            app:layout_constraintVertical_bias="0.0" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

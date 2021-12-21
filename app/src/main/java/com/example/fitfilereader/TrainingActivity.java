@@ -50,7 +50,7 @@ public class TrainingActivity extends AppCompatActivity {
     TextView tvt_pace_on_butterfly, tvt_pace_on_backstroke, tvt_pace_on_breaststroke, tvt_pace_on_freestyle;
 
     private PieChart pieChart;
-    private BarChart barChartHeartRate;
+    private BarChart barChartHeartRate, barChartAvgSpeed, barChartAvgCadence;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +82,8 @@ public class TrainingActivity extends AppCompatActivity {
 
         pieChart = findViewById(R.id.training_activity_pie_chart);
         barChartHeartRate = findViewById(R.id.training_activity_bar_chart_heart_rate);
+        barChartAvgSpeed = findViewById(R.id.training_activity_bar_chart_avg_speed_m_s);
+        barChartAvgCadence = findViewById(R.id.training_activity_bar_chart_avg_cadence);
 
         trainingId = getIntent().getIntExtra("ID_TRAINING", 0);
         LoadTrainingData(trainingId);
@@ -89,6 +91,8 @@ public class TrainingActivity extends AppCompatActivity {
         setUpPieChart();
         loadPieChartData();
         loadBarChartHeartRate();
+        loadBarChartAvgSpeed();
+        loadBarChartAvgCadence();
 
     }
 
@@ -343,5 +347,53 @@ public class TrainingActivity extends AppCompatActivity {
         barChartHeartRate.setData(barData);
         barChartHeartRate.getDescription().setText("Bar Chart Heart Rate");
         barChartHeartRate.animateY(2000);
+    }
+
+    private void loadBarChartAvgSpeed() {
+        FileDatabase database = FileDatabase.getDbInstance(this.getApplicationContext());
+
+        List<FitFile> fitFileList = database.fileDao().getOneTrainingWithoutBreak(trainingId);
+
+        ArrayList<BarEntry> entriesPace = new ArrayList<>();
+
+        for (int i = 0; i < fitFileList.size(); i++) {
+            entriesPace.add(new BarEntry(i + 1, fitFileList.get(i).avarageSpeedDb));
+        }
+
+        BarDataSet barDataSet = new BarDataSet(entriesPace, "Average Speed");
+        barDataSet.setColors(ColorTemplate.MATERIAL_COLORS);
+        barDataSet.setValueTextColor(Color.BLACK);
+        barDataSet.setValueTextSize(16f);
+
+        BarData barData = new BarData(barDataSet);
+
+        barChartAvgSpeed.setFitBars(true);
+        barChartAvgSpeed.setData(barData);
+        barChartAvgSpeed.getDescription().setText("Bar Chart Average Speed");
+        barChartAvgSpeed.animateY(2000);
+    }
+
+    public void loadBarChartAvgCadence() {
+        FileDatabase database = FileDatabase.getDbInstance(this.getApplicationContext());
+
+        List<FitFile> fitFileList = database.fileDao().getOneTrainingWithoutBreak(trainingId);
+
+        ArrayList<BarEntry> entriesPace = new ArrayList<>();
+
+        for (int i = 0; i < fitFileList.size(); i++) {
+            entriesPace.add(new BarEntry(i + 1, fitFileList.get(i).avarageCadenceDb));
+        }
+
+        BarDataSet barDataSet = new BarDataSet(entriesPace, "Average Cadence");
+        barDataSet.setColors(ColorTemplate.MATERIAL_COLORS);
+        barDataSet.setValueTextColor(Color.BLACK);
+        barDataSet.setValueTextSize(16f);
+
+        BarData barData = new BarData(barDataSet);
+
+        barChartAvgCadence.setFitBars(true);
+        barChartAvgCadence.setData(barData);
+        barChartAvgCadence.getDescription().setText("Bar Chart Average Cadence");
+        barChartAvgCadence.animateY(2000);
     }
 }
