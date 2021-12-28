@@ -2,8 +2,10 @@ package com.example.fitfilereader;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 
 import com.example.fitfilereader.db.FileDatabase;
@@ -12,7 +14,6 @@ import com.example.fitfilereader.db.FitFile;
 import java.util.List;
 
 public class GeneralStatisticActivity extends AppCompatActivity {
-
 
     TextView gsBestPaceButterfly, gsBestPaceBackstroke, gsBestPaceBreaststroke, gsBestPaceFreestyle, gsBurnKcal, gsSwumDistance, gsAllTrainings;
 
@@ -65,4 +66,8 @@ public class GeneralStatisticActivity extends AppCompatActivity {
         return swimTime;
     }
 
+    public void runDistanceGraphActivity(View view) {
+        Intent intent = new Intent(this, DistanceGraphActivity.class);
+        startActivity(intent);
+    }
 }

@@ -25,13 +25,16 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".BirthdayActivity"
+            android:name=".DistanceGraphActivity"
+            android:parentActivityName=".GeneralStatisticActivity"
             android:screenOrientation="portrait">
         </activity>
         <activity
+            android:name=".BirthdayActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity
             android:name=".TableActivity"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".TrainingActivity"
             android:screenOrientation="portrait" />
