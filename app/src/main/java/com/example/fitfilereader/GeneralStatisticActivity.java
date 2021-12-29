@@ -70,4 +70,5 @@ public class GeneralStatisticActivity extends AppCompatActivity {
         Intent intent = new Intent(this, DistanceGraphActivity.class);
         startActivity(intent);
     }
+
 }
