@@ -41,17 +41,26 @@ public class GeneralStatisticActivity extends AppCompatActivity {
         if (fitFileList.isEmpty()){
             Log.d("DATABASE", "Is Empty");
         } else {
-            String strPaceButterfly = String.format("%s/100 m", showPaceTimeSwim((int) (100 / database.fileDao().getBestPaceButterfly())));
-            String strPaceBackstroke = String.format("%s/100 m", showPaceTimeSwim((int) (100 / database.fileDao().getBestPaceBackstroke())));
-            String strPaceBreaststroke = String.format("%s/100 m", showPaceTimeSwim((int) (100 / database.fileDao().getBestPaceBreaststroke())));
-            String strPaceFreestyle = String.format("%s/100 m", showPaceTimeSwim((int) (100 / database.fileDao().getBestPaceFreestyle())));
+            if(database.fileDao().getBestPaceButterfly() != 0) {
+                String strPaceButterfly = String.format("%s/100 m", showPaceTimeSwim((int) (100 / database.fileDao().getBestPaceButterfly())));
+                gsBestPaceButterfly.setText(strPaceButterfly);
+            }
+            if(database.fileDao().getBestPaceBackstroke() != 0) {
+                String strPaceBackstroke = String.format("%s/100 m", showPaceTimeSwim((int) (100 / database.fileDao().getBestPaceBackstroke())));
+                gsBestPaceBackstroke.setText(strPaceBackstroke);
+            }
+            if(database.fileDao().getBestPaceBreaststroke() != 0) {
+                String strPaceBreaststroke = String.format("%s/100 m", showPaceTimeSwim((int) (100 / database.fileDao().getBestPaceBreaststroke())));
+                gsBestPaceBreaststroke.setText(strPaceBreaststroke);
+            }
+            if(database.fileDao().getBestPaceFreestyle() != 0) {
+                String strPaceFreestyle = String.format("%s/100 m", showPaceTimeSwim((int) (100 / database.fileDao().getBestPaceFreestyle())));
+                gsBestPaceFreestyle.setText(strPaceFreestyle);
+            }
+
             String strBurnKcal = String.format("%s kcal", database.fileDao().getAllBurnedKcal());
             String strSwumDistance = String.format("%s m", database.fileDao().getAllSwumDistance());
 
-            gsBestPaceButterfly.setText(strPaceButterfly);
-            gsBestPaceBackstroke.setText(strPaceBackstroke);
-            gsBestPaceBreaststroke.setText(strPaceBreaststroke);
-            gsBestPaceFreestyle.setText(strPaceFreestyle);
             gsBurnKcal.setText(strBurnKcal);
             gsSwumDistance.setText(strSwumDistance);
             gsAllTrainings.setText(String.valueOf(database.fileDao().getLastID()));

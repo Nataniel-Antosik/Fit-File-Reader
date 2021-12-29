@@ -168,7 +168,6 @@ public class ProgresActivity extends AppCompatActivity {
                                 lastPlusOne += 1;
                             }
                         }
-                        Log.d("LASTPLUSONE FREE", String.valueOf(lastPlusOne));
                         tvFreestyleOldRecord.setText(showPaceTimeSwim((int) (100 / trainingProgressModel.get(trainingProgressModel.size() - lastPlusOne).getSwimBestPaceFreestyle())));
                         String strDiff = String.format("- %s", showPaceTimeSwim((int) ((100 / trainingProgressModel.get(trainingProgressModel.size() - lastPlusOne).getSwimBestPaceFreestyle()) -
                                 (100 / trainingProgressModel.get(trainingProgressModel.size() - 1).getSwimBestPaceFreestyle()))));
