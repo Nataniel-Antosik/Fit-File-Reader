@@ -7,12 +7,342 @@
     tools:context=".ProgresActivity">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/text_view_progres_header"
+        style="@style/TrainingHeaderFontStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Progres Activity"
+        android:text="@string/progres_on_100_m"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.022" />
+
+    <TableLayout
+        android:id="@+id/table_progres_layout"
+        android:layout_width="415dp"
+        android:layout_height="676dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_view_progres_header">
+
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:weightSum="150">
+
+            <TextView
+                android:id="@+id/text_view_butterfly_old_record"
+                style="@style/NewFontStyleProgresTable"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="-" />
+
+            <TextView
+                android:id="@+id/text_view_butterfly_difference_records"
+                style="@style/NewFontStyleProgresTable"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="74"
+                android:text="-" />
+
+            <TextView
+                android:id="@+id/text_view_butterfly_new_record"
+                style="@style/NewFontStyleProgresTable"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="74"
+                android:text="-" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:weightSum="150">
+
+            <TextView
+                android:id="@+id/text_view_butterfly_old_record_date"
+                style="@style/NewFontStyleProgresTable"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="-" />
+
+            <TextView
+                android:id="@+id/text_view_butterfly_difference_records_date"
+                style="@style/NewFontStyleProgresTable"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="74"
+                android:text=" " />
+
+            <TextView
+                android:id="@+id/text_view_butterfly_new_record_date"
+                style="@style/NewFontStyleProgresTable"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="74"
+                android:text="-" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="30dp">
+
+            <TextView
+                android:id="@+id/text_view_butterfly_header"
+                style="@style/NewFontStyleProgresTableHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="4"
+                android:text="@string/progres_butterfly_header" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:weightSum="150">
+
+            <TextView
+                android:id="@+id/text_view_backstroke_old_record"
+                style="@style/NewFontStyleProgresTable"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="-" />
+
+            <TextView
+                android:id="@+id/text_view_backstroke_difference_records"
+                style="@style/NewFontStyleProgresTable"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="74"
+                android:text="-" />
+
+            <TextView
+                android:id="@+id/text_view_backstroke_new_record"
+                style="@style/NewFontStyleProgresTable"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="74"
+                android:text="-" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:weightSum="150">
+
+            <TextView
+                android:id="@+id/text_view_backstroke_old_record_date"
+                style="@style/NewFontStyleProgresTable"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="-" />
+
+            <TextView
+                android:id="@+id/text_view_backstroke_difference_records_date"
+                style="@style/NewFontStyleProgresTable"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="74"
+                android:text=" " />
+
+            <TextView
+                android:id="@+id/text_view_backstroke_new_record_date"
+                style="@style/NewFontStyleProgresTable"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="74"
+                android:text="-" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="30dp">
+
+            <TextView
+                android:id="@+id/text_view_backstroke_header"
+                style="@style/NewFontStyleProgresTableHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="@string/progres_backstroke_header" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:weightSum="150">
+
+            <TextView
+                android:id="@+id/text_view_breaststroke_old_record"
+                style="@style/NewFontStyleProgresTable"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="-" />
+
+            <TextView
+                android:id="@+id/text_view_breaststroke_difference_records"
+                style="@style/NewFontStyleProgresTable"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="74"
+                android:text="-" />
+
+            <TextView
+                android:id="@+id/text_view_breaststroke_new_record"
+                style="@style/NewFontStyleProgresTable"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="74"
+                android:text="-" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:weightSum="150">
+
+            <TextView
+                android:id="@+id/text_view_breaststroke_old_record_date"
+                style="@style/NewFontStyleProgresTable"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="-" />
+
+            <TextView
+                android:id="@+id/text_view_breaststroke_difference_records_date"
+                style="@style/NewFontStyleProgresTable"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="74"
+                android:text=" " />
+
+            <TextView
+                android:id="@+id/text_view_breaststroke_new_record_date"
+                style="@style/NewFontStyleProgresTable"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="74"
+                android:text="-" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="30dp">
+
+            <TextView
+                android:id="@+id/text_view_breaststroke_header"
+                style="@style/NewFontStyleProgresTableHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/progres_breaststroke_header" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:weightSum="150">
+
+            <TextView
+                android:id="@+id/text_view_freestyle_old_record"
+                style="@style/NewFontStyleProgresTable"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="-" />
+
+            <TextView
+                android:id="@+id/text_view_freestyle_difference_records"
+                style="@style/NewFontStyleProgresTable"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="74"
+                android:text="-" />
+
+            <TextView
+                android:id="@+id/text_view_freestyle_new_record"
+                style="@style/NewFontStyleProgresTable"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="74"
+                android:text="-" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:weightSum="150">
+
+            <TextView
+                android:id="@+id/text_view_freestyle_old_record_date"
+                style="@style/NewFontStyleProgresTable"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="-" />
+
+            <TextView
+                android:id="@+id/text_view_freestyle_difference_records_date"
+                style="@style/NewFontStyleProgresTable"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="74"
+                android:text=" " />
+
+            <TextView
+                android:id="@+id/text_view_freestyle_new_record_date"
+                style="@style/NewFontStyleProgresTable"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="74"
+                android:text="-" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="30dp">
+
+            <TextView
+                android:id="@+id/text_view_freestyle_header"
+                style="@style/NewFontStyleProgresTableHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/progres_freestyle_header" />
+
+        </TableRow>
+
+
+    </TableLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

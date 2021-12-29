@@ -46,6 +46,18 @@ public interface FileDao {
     @Query("SELECT AVG(avarage_speed) FROM fitfile WHERE training_id = :trainingIdToDatabase AND swim_storke == 'FREESTYLE'")
     float getAvgPaceOnFreestyle(int trainingIdToDatabase);
 
+    @Query("SELECT MAX(avarage_speed) FROM fitfile WHERE training_id = :trainingIdToDatabase AND swim_storke == 'BUTTERFLY'")
+    float getMaxPaceOnButterfly(int trainingIdToDatabase);
+
+    @Query("SELECT MAX(avarage_speed) FROM fitfile WHERE training_id = :trainingIdToDatabase AND swim_storke == 'BACKSTROKE'")
+    float getMaxPaceOnBackstroke(int trainingIdToDatabase);
+
+    @Query("SELECT MAX(avarage_speed) FROM fitfile WHERE training_id = :trainingIdToDatabase AND swim_storke == 'BREASTSTROKE'")
+    float getMaxPaceOnBreaststroke(int trainingIdToDatabase);
+
+    @Query("SELECT MAX(avarage_speed) FROM fitfile WHERE training_id = :trainingIdToDatabase AND swim_storke == 'FREESTYLE'")
+    float getMaxPaceOnFreestyle(int trainingIdToDatabase);
+
     @Query("SELECT AVG(avg_heart_rate) FROM fitfile WHERE training_id = :trainingIdToDatabase")
     int getAvgHeartRate(int trainingIdToDatabase);
 

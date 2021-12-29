@@ -70,7 +70,6 @@ public class Fragment3Years extends Fragment {
 
         final ArrayList<String> xAxisLabel = new ArrayList<>();
         for (int i = 0; i < yearsLabels.length; i++) {
-            Log.d(TAG, yearsLabels[i]);
             xAxisLabel.add(yearsLabels[i]);
         }
 

@@ -74,7 +74,6 @@ public class Fragment2Months extends Fragment {
 
         final ArrayList<String> xAxisLabel = new ArrayList<>();
         for (int i = 0; i < monthsLabels.length; i++) {
-            Log.d(TAG, monthsLabels[i]);
             xAxisLabel.add(monthsLabels[i]);
         }
 

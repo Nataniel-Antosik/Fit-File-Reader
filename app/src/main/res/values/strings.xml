@@ -42,5 +42,10 @@
     <string name="pie_chart_active_zone">Training Zones</string>
     <string name="bar_chart_avg_speed_m_s_header">Average Speed m/s In Intervals</string>
     <string name="bar_chart_avg_cadence_header">Average Cadence In Intervals</string>
+    <string name="progres_on_100_m">Progres on 100m</string>
+    <string name="progres_butterfly_header">Butterfly</string>
+    <string name="progres_backstroke_header">Backstroke</string>
+    <string name="progres_freestyle_header">Freestyle</string>
+    <string name="progres_breaststroke_header">Breaststroke</string>
 
 </resources>
