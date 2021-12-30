@@ -4,7 +4,7 @@
     <string name="take_data">Take Data</string>
 
     <string name="general_statistic">General Statistic</string>
-    <string name="progres">Progres</string>
+    <string name="progres">Progress</string>
     <string name="files">Files</string>
 
     <!--to toggle the open close button
@@ -42,7 +42,7 @@
     <string name="pie_chart_active_zone">Training Zones</string>
     <string name="bar_chart_avg_speed_m_s_header">Average Speed m/s In Intervals</string>
     <string name="bar_chart_avg_cadence_header">Average Cadence In Intervals</string>
-    <string name="progres_on_100_m">Progres on 100m</string>
+    <string name="progres_on_100_m">Progress on 100m</string>
     <string name="progres_butterfly_header">Butterfly</string>
     <string name="progres_backstroke_header">Backstroke</string>
     <string name="progres_freestyle_header">Freestyle</string>
