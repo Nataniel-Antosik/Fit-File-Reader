@@ -104,15 +104,23 @@ public class ProgresActivity extends AppCompatActivity {
                         tvButterflyOldRecord.setText(showPaceTimeSwim((int) (100 / trainingProgressModel.get(trainingProgressModel.size() - 1).getSwimBestPaceButterfly())));
                         tvButterflyOldRecordDate.setText(correctDate(trainingProgressModel.get(trainingProgressModel.size() - 1).getSwimDateProgress()));
                     } else {
-                        int lastPlusOne = 0;
-                        for (int i = 0; i < trainingProgressModel.size(); i++){
-                            if (!dateFormat.parse(trainingProgressModel.get(i).getSwimDateProgress()).before(dateFormat.parse(trainingProgressModel.get(trainingProgressModel.size() - 1).getSwimDateProgress()))) {
-                                lastPlusOne += 1;
+
+                        int lastPlusOne = 1;
+                        int end = trainingProgressModel.size() - 1;
+                        while(!dateFormat.parse(trainingProgressModel.get(end).getSwimDateProgress()).before(dateFormat.parse(trainingProgressModel.get(trainingProgressModel.size() - 1).getSwimDateProgress()))){
+                            lastPlusOne += 1;
+                            end -= 1;
+                        }
+
+//                        int lastPlusOne = 0;
+//                        for (int i = 0; i < trainingProgressModel.size(); i++){
+//                            if (!dateFormat.parse(trainingProgressModel.get(i).getSwimDateProgress()).before(dateFormat.parse(trainingProgressModel.get(trainingProgressModel.size() - 1).getSwimDateProgress()))) {
+//                                lastPlusOne += 1;
 //                                if ((int)(100 / trainingProgressModel.get(trainingProgressModel.size() - 1).getSwimBestPaceButterfly()) == (int) (100 / trainingProgressModel.get(i).getSwimBestPaceButterfly())) {
 //                                    lastPlusOne += 1;
 //                                }
-                            }
-                        }
+//                            }
+//                        }
                         if (trainingProgressModel.get(trainingProgressModel.size() - lastPlusOne).getSwimBestPaceButterfly() == 0) {
                             tvButterflyOldRecord.setText(showPaceTimeSwim((int) (100 / trainingProgressModel.get(trainingProgressModel.size() - 1).getSwimBestPaceButterfly())));
                             tvButterflyOldRecordDate.setText(correctDate(trainingProgressModel.get(trainingProgressModel.size() - 1).getSwimDateProgress()));
@@ -136,12 +144,14 @@ public class ProgresActivity extends AppCompatActivity {
                         tvBackstrokeOldRecord.setText(showPaceTimeSwim((int) (100 / trainingProgressModel.get(trainingProgressModel.size() - 1).getSwimBestPaceBackstroke())));
                         tvBackstrokeOldRecordDate.setText(correctDate(trainingProgressModel.get(trainingProgressModel.size() - 1).getSwimDateProgress()));
                     } else {
-                        int lastPlusOne = 0;
-                        for (int i = 0; i < trainingProgressModel.size() - 1; i++){
-                            if (!dateFormat.parse(trainingProgressModel.get(i).getSwimDateProgress()).before(dateFormat.parse(trainingProgressModel.get(trainingProgressModel.size() - 1).getSwimDateProgress()))) {
-                                lastPlusOne += 1;
-                            }
+
+                        int lastPlusOne = 1;
+                        int end = trainingProgressModel.size() - 1;
+                        while(!dateFormat.parse(trainingProgressModel.get(end).getSwimDateProgress()).before(dateFormat.parse(trainingProgressModel.get(trainingProgressModel.size() - 1).getSwimDateProgress()))){
+                            lastPlusOne += 1;
+                            end -= 1;
                         }
+
                         if (trainingProgressModel.get(trainingProgressModel.size() - lastPlusOne).getSwimBestPaceBackstroke() == 0) {
                             tvBackstrokeOldRecord.setText(showPaceTimeSwim((int) (100 / trainingProgressModel.get(trainingProgressModel.size() - 1).getSwimBestPaceBackstroke())));
                             tvBackstrokeOldRecordDate.setText(correctDate(trainingProgressModel.get(trainingProgressModel.size() - 1).getSwimDateProgress()));
@@ -159,18 +169,32 @@ public class ProgresActivity extends AppCompatActivity {
 
                 trainingProgressModel.sort((o1, o2) -> Double.compare(o1.getSwimBestPaceBreaststroke(), o2.getSwimBestPaceBreaststroke()));
 
+//                for(int i = 0; i < trainingProgressModel.size(); i++) {
+//                    if (!dateFormat.parse(trainingProgressModel.get(i).getSwimDateProgress()).before(dateFormat.parse(trainingProgressModel.get(trainingProgressModel.size() - 1).getSwimDateProgress()))) {
+//                        String tmp = String.format("Training: %s, Date: %s, Pace Butt: %s", i + 1, trainingProgressModel.get(i).getSwimDateProgress(), showPaceTimeSwim((int) (100 / trainingProgressModel.get(i).getSwimBestPaceBreaststroke())));
+//                        Log.d("TEST", tmp);
+//                    }
+//                }
+//                Log.d("==", "===================");
+//                for(int i = 0; i < trainingProgressModel.size(); i++) {
+//                    String tmp = String.format("Training: %s, Date: %s, Pace Butt: %s", i + 1, trainingProgressModel.get(i).getSwimDateProgress(), showPaceTimeSwim((int) (100 / trainingProgressModel.get(i).getSwimBestPaceBreaststroke())));
+//                    Log.d("TEST", tmp);
+//                }
+
                 if (trainingProgressModel.get(trainingProgressModel.size() - 1).getSwimBestPaceBreaststroke() != 0.0 ||
                         trainingProgressModel.get(trainingProgressModel.size() - 2).getSwimBestPaceBreaststroke() != 0.0) {
                     if(trainingProgressModel.get(trainingProgressModel.size() - 2).getSwimBestPaceBreaststroke() == 0.0) {
                         tvBreaststrokeOldRecord.setText(showPaceTimeSwim((int) (100 / trainingProgressModel.get(trainingProgressModel.size() - 1).getSwimBestPaceBreaststroke())));
                         tvBreaststrokeOldRecordDate.setText(correctDate(trainingProgressModel.get(trainingProgressModel.size() - 1).getSwimDateProgress()));
                     } else {
-                        int lastPlusOne = 0;
-                        for (int i = 0; i < trainingProgressModel.size() - 1; i++){
-                            if (!dateFormat.parse(trainingProgressModel.get(i).getSwimDateProgress()).before(dateFormat.parse(trainingProgressModel.get(trainingProgressModel.size() - 1).getSwimDateProgress()))) {
-                                lastPlusOne += 1;
-                            }
+
+                        int lastPlusOne = 1;
+                        int end = trainingProgressModel.size() - 1;
+                        while(!dateFormat.parse(trainingProgressModel.get(end).getSwimDateProgress()).before(dateFormat.parse(trainingProgressModel.get(trainingProgressModel.size() - 1).getSwimDateProgress()))){
+                            lastPlusOne += 1;
+                            end -= 1;
                         }
+
                         if (trainingProgressModel.get(trainingProgressModel.size() - lastPlusOne).getSwimBestPaceBreaststroke() == 0) {
                             tvBreaststrokeOldRecord.setText(showPaceTimeSwim((int) (100 / trainingProgressModel.get(trainingProgressModel.size() - 1).getSwimBestPaceBreaststroke())));
                             tvBreaststrokeOldRecordDate.setText(correctDate(trainingProgressModel.get(trainingProgressModel.size() - 1).getSwimDateProgress()));
@@ -206,12 +230,20 @@ public class ProgresActivity extends AppCompatActivity {
                         tvFreestyleOldRecord.setText(showPaceTimeSwim((int) (100 / trainingProgressModel.get(trainingProgressModel.size() - 1).getSwimBestPaceFreestyle())));
                         tvFreestyleOldRecordDate.setText(correctDate(trainingProgressModel.get(trainingProgressModel.size() - 1).getSwimDateProgress()));
                     } else {
-                        int lastPlusOne = 0;
-                        for (int i = 0; i < trainingProgressModel.size() - 1; i++){
-                            if (!dateFormat.parse(trainingProgressModel.get(i).getSwimDateProgress()).before(dateFormat.parse(trainingProgressModel.get(trainingProgressModel.size() - 1).getSwimDateProgress()))) {
-                                lastPlusOne += 1;
-                            }
+
+                        int lastPlusOne = 1;
+                        int end = trainingProgressModel.size() - 1;
+                        while(!dateFormat.parse(trainingProgressModel.get(end).getSwimDateProgress()).before(dateFormat.parse(trainingProgressModel.get(trainingProgressModel.size() - 1).getSwimDateProgress()))){
+                            lastPlusOne += 1;
+                            end -= 1;
                         }
+
+//                        int lastPlusOne = 0;
+//                        for (int i = 0; i < trainingProgressModel.size() - 1; i++){
+//                            if (!dateFormat.parse(trainingProgressModel.get(i).getSwimDateProgress()).before(dateFormat.parse(trainingProgressModel.get(trainingProgressModel.size() - 1).getSwimDateProgress()))) {
+//                                lastPlusOne += 1;
+//                            }
+//                        }
                         if (trainingProgressModel.get(trainingProgressModel.size() - lastPlusOne).getSwimBestPaceFreestyle() == 0) {
                             tvFreestyleOldRecord.setText(showPaceTimeSwim((int) (100 / trainingProgressModel.get(trainingProgressModel.size() - 1).getSwimBestPaceFreestyle())));
                             tvFreestyleOldRecordDate.setText(correctDate(trainingProgressModel.get(trainingProgressModel.size() - 1).getSwimDateProgress()));
