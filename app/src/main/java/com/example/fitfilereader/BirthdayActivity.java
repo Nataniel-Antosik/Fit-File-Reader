@@ -32,6 +32,8 @@ public class BirthdayActivity extends AppCompatActivity {
 
         mDisplayDate = findViewById(R.id.text_view_user_birthday);
 
+        checkUserBirthdayDate();
+
         mDisplayDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -52,7 +54,7 @@ public class BirthdayActivity extends AppCompatActivity {
                         BirthdayActivity.this,
                         android.R.style.Theme_Holo_Dialog,
                         mDateSetListener,
-                        year,
+                        year - 18,
                         month,
                         day);
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -88,5 +90,14 @@ public class BirthdayActivity extends AppCompatActivity {
         database.userDao().insertUser(userData);
         Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);
+    }
+
+    public void checkUserBirthdayDate(){
+        UserDatabase database = UserDatabase.getDbInstance(this.getApplicationContext());
+        List<UserData> userFileList = database.userDao().getAllBirthdayDate();
+
+        if(userFileList.size() != 0){
+             finish();
+        }
     }
 }

@@ -20,6 +20,7 @@ import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.LegendEntry;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
@@ -45,6 +46,7 @@ public class TrainingActivity extends AppCompatActivity {
     private static int improvedCardiovascularPerformance;
     private static int lactateThreshold;
     private static int VO2max;
+    private static int countPieChartColors;
 
     TextView tvt_date, tvt_calories, tvt_distance, tvt_avg_rate, tvt_max_rate, tvt_moving_time, tvt_elapsed_time, tvt_avg_pace, tvt_best_pace, tvt_avg_cadence;
     TextView tvt_pace_on_butterfly, tvt_pace_on_backstroke, tvt_pace_on_breaststroke, tvt_pace_on_freestyle;
@@ -282,35 +284,35 @@ public class TrainingActivity extends AppCompatActivity {
 
     private void loadPieChartData() {
         ArrayList<PieEntry> entries = new ArrayList<>();
-        if (warmUp != 0)
-            entries.add(new PieEntry(warmUp, "Warm-Up"));
-
-        if (activeRegenerationZone != 0)
-            entries.add(new PieEntry(activeRegenerationZone, "Active Regeneration Zone"));
-
-        if (enduranceTraining != 0)
-            entries.add(new PieEntry(enduranceTraining, "Endurance Training"));
-
-        if (improvedCardiovascularPerformance != 0)
-            entries.add(new PieEntry(improvedCardiovascularPerformance, "Improved Cardiovascular Performance"));
-
-        if (lactateThreshold != 0)
-            entries.add(new PieEntry(lactateThreshold, "Lactate Threshold"));
-
-        if (VO2max != 0)
-            entries.add(new PieEntry(VO2max, "VO2max"));
-
-
         ArrayList<Integer> colors = new ArrayList<>();
-        for (int color: ColorTemplate.MATERIAL_COLORS) {
-            colors.add(color);
-        }
 
-        for (int color: ColorTemplate.VORDIPLOM_COLORS) {
-            colors.add(color);
+        if (warmUp != 0) {
+            entries.add(new PieEntry(warmUp, "Warm-Up"));
+            colors.add(Color.BLUE);
+        }
+        if (activeRegenerationZone != 0) {
+            entries.add(new PieEntry(activeRegenerationZone, "Active Regeneration Zone"));
+            colors.add(Color.CYAN);
+        }
+        if (enduranceTraining != 0) {
+            entries.add(new PieEntry(enduranceTraining, "Endurance Training"));
+            colors.add(Color.MAGENTA);
+        }
+        if (improvedCardiovascularPerformance != 0) {
+            entries.add(new PieEntry(improvedCardiovascularPerformance, "Improved Cardiovascular Performance"));
+            colors.add(Color.GREEN);
+        }
+        if (lactateThreshold != 0) {
+            entries.add(new PieEntry(lactateThreshold, "Lactate Threshold"));
+            colors.add(Color.YELLOW);
+        }
+        if (VO2max != 0) {
+            entries.add(new PieEntry(VO2max, "VO2max"));
+            colors.add(Color.RED);
         }
 
         PieDataSet dataSet = new PieDataSet(entries, "Training Zones");
+
         dataSet.setColors(colors);
 
         PieData data = new PieData(dataSet);
@@ -327,19 +329,51 @@ public class TrainingActivity extends AppCompatActivity {
 
     private void loadBarChartHeartRate() {
         FileDatabase database = FileDatabase.getDbInstance(this.getApplicationContext());
+        UserDatabase userDatabase = UserDatabase.getDbInstance(this.getApplicationContext());
+        String age = splitDateAndGetAge(userDatabase.userDao().getUserBirthdayDate(), correctDate(database.fileDao().getTrainingDate(trainingId)));
+
+        int MHRIW = maxHeartRateInWater(Integer.parseInt(age));
+
+        int countColor = 0;
+        
+        ArrayList<Integer> colors = new ArrayList<>();
 
         List<FitFile> fitFileList = database.fileDao().getOneTraining(trainingId);
 
         ArrayList<BarEntry> entriesPace = new ArrayList<>();
 
         for (int i = 0; i < fitFileList.size(); i++){
+
+            if (fitFileList.get(i).avgHeartRateDb < (int) (MHRIW * 0.60)) {
+                colors.add(Color.BLUE);
+            }
+
+            if(fitFileList.get(i).avgHeartRateDb >= ((int)(MHRIW*0.60)) && fitFileList.get(i).avgHeartRateDb <= ((int)(MHRIW*0.65))){
+                colors.add(Color.CYAN);
+            }
+
+            if (fitFileList.get(i).avgHeartRateDb >= ((int) (MHRIW * 0.66)) && fitFileList.get(i).avgHeartRateDb <= ((int) (MHRIW * 0.72))) {
+                colors.add(Color.MAGENTA);
+            }
+
+            if (fitFileList.get(i).avgHeartRateDb >= ((int) (MHRIW * 0.73)) && fitFileList.get(i).avgHeartRateDb <= ((int) (MHRIW * 0.83))) {
+                colors.add(Color.GREEN);
+            }
+
+            if (fitFileList.get(i).avgHeartRateDb >= ((int) (MHRIW * 0.84)) && fitFileList.get(i).avgHeartRateDb <= ((int) (MHRIW * 0.90))) {
+                colors.add(Color.YELLOW);
+            }
+
+            if (fitFileList.get(i).avgHeartRateDb >= ((int) (MHRIW * 0.91))) {
+                colors.add(Color.RED);
+            }
             entriesPace.add(new BarEntry(i + 1, fitFileList.get(i).avgHeartRateDb));
         }
 
         BarDataSet barDataSet = new BarDataSet(entriesPace, "Heart Rate");
-        barDataSet.setColors(ColorTemplate.MATERIAL_COLORS);
+        barDataSet.setColors(colors);
         barDataSet.setValueTextColor(Color.BLACK);
-        barDataSet.setValueTextSize(16f);
+        barDataSet.setValueTextSize(10f);
 
         BarData barData = new BarData(barDataSet);
 
@@ -347,6 +381,81 @@ public class TrainingActivity extends AppCompatActivity {
         barChartHeartRate.setData(barData);
         barChartHeartRate.getDescription().setText("Bar Chart Heart Rate");
         barChartHeartRate.animateY(2000);
+
+        if (warmUp != 0){
+            countColor += 1;
+        }
+        if (activeRegenerationZone != 0){
+            countColor += 1;
+        }
+        if (enduranceTraining != 0) {
+            countColor += 1;
+        }
+        if (improvedCardiovascularPerformance != 0){
+            countColor += 1;
+        }
+        if (lactateThreshold != 0){
+            countColor += 1;
+        }
+        if (VO2max != 0){
+            countColor += 1;
+        }
+
+        Legend l = barChartHeartRate.getLegend();
+        l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
+        l.setWordWrapEnabled(true);
+        l.setMaxSizePercent(0.20f);
+        l.setDrawInside(false);
+        l.setEnabled(true);
+
+        LegendEntry[] legendEntry = new LegendEntry[countColor];
+
+        int iterator = 0;
+        if (warmUp != 0) {
+            LegendEntry entry = new LegendEntry();
+            entry.label = "Warm-Up";
+            entry.formColor = Color.BLUE;
+            legendEntry[iterator] = entry;
+            iterator += 1;
+        }
+        if (activeRegenerationZone != 0) {
+            LegendEntry entry = new LegendEntry();
+            entry.label = "Active Regeneration Zone";
+            entry.formColor = Color.CYAN;
+            legendEntry[iterator] = entry;
+            iterator += 1;
+        }
+        if (enduranceTraining != 0) {
+            LegendEntry entry = new LegendEntry();
+            entry.label = "Endurance Training";
+            entry.formColor = Color.MAGENTA;
+            legendEntry[iterator] = entry;
+            iterator += 1;
+        }
+        if (improvedCardiovascularPerformance != 0) {
+            LegendEntry entry = new LegendEntry();
+            entry.label = "Improved Cardiovascular Performance";
+            entry.formColor = Color.GREEN;
+            legendEntry[iterator] = entry;
+            iterator += 1;
+        }
+        if (lactateThreshold != 0) {
+            LegendEntry entry = new LegendEntry();
+            entry.label = "Lactate Threshold";
+            entry.formColor = Color.YELLOW;
+            legendEntry[iterator] = entry;
+            iterator += 1;
+        }
+        if (VO2max != 0) {
+            LegendEntry entry = new LegendEntry();
+            entry.label = "VO2max";
+            entry.formColor = Color.RED;
+            legendEntry[iterator] = entry;
+            iterator += 1;
+        }
+
+        l.setCustom(legendEntry);
+
     }
 
     private void loadBarChartAvgSpeed() {
@@ -363,7 +472,7 @@ public class TrainingActivity extends AppCompatActivity {
         BarDataSet barDataSet = new BarDataSet(entriesPace, "Average Speed");
         barDataSet.setColors(ColorTemplate.MATERIAL_COLORS);
         barDataSet.setValueTextColor(Color.BLACK);
-        barDataSet.setValueTextSize(16f);
+        barDataSet.setValueTextSize(10f);
 
         BarData barData = new BarData(barDataSet);
 
@@ -387,7 +496,7 @@ public class TrainingActivity extends AppCompatActivity {
         BarDataSet barDataSet = new BarDataSet(entriesPace, "Average Cadence");
         barDataSet.setColors(ColorTemplate.MATERIAL_COLORS);
         barDataSet.setValueTextColor(Color.BLACK);
-        barDataSet.setValueTextSize(16f);
+        barDataSet.setValueTextSize(10f);
 
         BarData barData = new BarData(barDataSet);
 

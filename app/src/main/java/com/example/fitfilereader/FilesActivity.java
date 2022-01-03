@@ -22,6 +22,8 @@ import android.widget.Toast;
 
 import com.example.fitfilereader.db.FileDatabase;
 import com.example.fitfilereader.db.FitFile;
+import com.example.fitfilereader.db.ShortcutDatabase;
+import com.example.fitfilereader.db.ShortcutFile;
 import com.example.fitfilereader.db.UserDao;
 import com.example.fitfilereader.db.UserData;
 import com.example.fitfilereader.db.UserDatabase;
@@ -31,6 +33,8 @@ import java.io.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
 import java.text.Format;
 import java.text.ParseException;
@@ -150,7 +154,7 @@ public class FilesActivity extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
-    public void takeData(View view) throws IOException {
+    public void takeData(View view) throws IOException, NoSuchAlgorithmException {
         // Update list of fit files
         loadFiles();
 
@@ -168,7 +172,15 @@ public class FilesActivity extends AppCompatActivity {
 
                 for (int i = 0; i < fileArray.size(); i++){
                     String str = String.format("%s%s%s", Environment.getExternalStorageDirectory(), folderName, fileArray.get(i));
-                    decodeFitFiles(str);
+//                    Log.d("FILE", str);
+//                    Log.d("SHORTCUT", generateShortcut(str));
+//                    Log.d("VALIDATE", String.valueOf(validateFile(str)));
+                    if (validateFile(str) == true) {
+                        decodeFitFiles(str);
+                    } else {
+                        File tmpFile = new File(str);
+                        tmpFile.delete();
+                    }
                 }
                 loadFiles();
             }
@@ -404,6 +416,86 @@ public class FilesActivity extends AppCompatActivity {
             newDateFormat = arr[arr.length-1] + "/" + "12" + "/"+ arr[2];
         }
         return newDateFormat;
+    }
+
+    public boolean validateFile(String filePath) throws IOException, NoSuchAlgorithmException {
+        ShortcutDatabase shortcutDatabase = ShortcutDatabase.getDbInstance(this.getApplicationContext());
+        List<ShortcutFile> shortcutFileList = shortcutDatabase.shortcutDao().getAllShortcutFile();
+
+        ShortcutFile shortcutFile = new ShortcutFile();
+
+        boolean validate = false;
+
+        if(shortcutFileList.isEmpty()){
+            shortcutFile.shortcut = generateShortcut(filePath);
+            shortcutDatabase.shortcutDao().insert(shortcutFile);
+            validate = true;
+        } else {
+            String tmp = generateShortcut(filePath);
+            for (int i = 0; i < shortcutFileList.size(); i++) {
+                if (tmp.equals(shortcutFileList.get(i).shortcut)) {
+                    return false;
+                }
+            }
+            shortcutFile.shortcut = generateShortcut(filePath);
+            shortcutDatabase.shortcutDao().insert(shortcutFile);
+            validate = true;
+        }
+        return validate;
+    }
+    /*
+    UserDatabase database = UserDatabase.getDbInstance(this.getApplicationContext());
+        UserData userData = new UserData();
+        int m = month + 1;
+        String strBirthday = String.format("%s-%s-%s", year, m, dayOfMonth);
+
+        userData.userBirthdayDate = strBirthday;
+
+        database.userDao().insertUser(userData);
+     */
+
+    public String generateShortcut(String filePath) throws NoSuchAlgorithmException, IOException {
+        File file = new File(filePath);
+        MessageDigest shaDigest = MessageDigest.getInstance("SHA-256");
+        String shaChecksum = getFileChecksum(shaDigest, file);
+        return shaChecksum;
+    }
+
+    private static String getFileChecksum(MessageDigest digest, File file) throws IOException
+    {
+        // This code is from:
+        // https://howtodoinjava.com/java/io/sha-md5-file-checksum-hash/
+        //
+        //
+
+        //Get file input stream for reading the file content
+        FileInputStream fis = new FileInputStream(file);
+
+        //Create byte array to read data in chunks
+        byte[] byteArray = new byte[1024];
+        int bytesCount = 0;
+
+        //Read file data and update in message digest
+        while ((bytesCount = fis.read(byteArray)) != -1) {
+            digest.update(byteArray, 0, bytesCount);
+        };
+
+        //close the stream; We don't need it now.
+        fis.close();
+
+        //Get the hash's bytes
+        byte[] bytes = digest.digest();
+
+        //This bytes[] has bytes in decimal format;
+        //Convert it to hexadecimal format
+        StringBuilder sb = new StringBuilder();
+        for(int i=0; i< bytes.length ;i++)
+        {
+            sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
+        }
+
+        //return complete hash
+        return sb.toString();
     }
 
     public static class Listener implements LapMesgListener, UserProfileMesgListener {
