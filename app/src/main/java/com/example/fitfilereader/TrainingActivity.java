@@ -21,6 +21,8 @@ import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.LegendEntry;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
@@ -373,7 +375,7 @@ public class TrainingActivity extends AppCompatActivity {
         BarDataSet barDataSet = new BarDataSet(entriesPace, "Heart Rate");
         barDataSet.setColors(colors);
         barDataSet.setValueTextColor(Color.BLACK);
-        barDataSet.setValueTextSize(10f);
+        barDataSet.setValueTextSize(0);
 
         BarData barData = new BarData(barDataSet);
 
@@ -381,6 +383,10 @@ public class TrainingActivity extends AppCompatActivity {
         barChartHeartRate.setData(barData);
         barChartHeartRate.getDescription().setText("Bar Chart Heart Rate");
         barChartHeartRate.animateY(2000);
+
+        YAxis yAxis = barChartHeartRate.getAxisLeft();
+        yAxis.setLabelCount(entriesPace.size());
+        yAxis.setGranularity(1f);
 
         if (warmUp != 0){
             countColor += 1;
