@@ -6,6 +6,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -28,8 +30,9 @@ import java.util.List;
 public class Fragment2Months extends Fragment {
 
     public static final String TAG = "Fragment 2 Months";
-    public static final int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+    public static int currentYear = Calendar.getInstance().get(Calendar.YEAR);
     private BarChart barChartDistanceMonths;
+    private TextView tvYear;
     int sumJan, sumFeb, sumMarch, sumApril, sumMay, sumJune, sumJuly, sumAug, sumSept, sumOct, sumNov, sumDec;
 
     @Nullable
@@ -37,7 +40,33 @@ public class Fragment2Months extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_2_months, container, false);
         barChartDistanceMonths = view.findViewById(R.id.bar_chart_distance_months);
+        tvYear = view.findViewById(R.id.year_date);
         setupDistanceGraph();
+        tvYear.setText(String.valueOf(currentYear));
+        ImageButton button = (ImageButton) view.findViewById(R.id.year_button_right);
+        button.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                currentYear += 1;
+                clearSumData();
+                setupDistanceGraph();
+                tvYear.setText(String.valueOf(currentYear));
+            }
+        });
+        ImageButton button2 = (ImageButton) view.findViewById(R.id.year_button_left);
+        button2.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                currentYear -= 1;
+                clearSumData();
+                setupDistanceGraph();
+                tvYear.setText(String.valueOf(currentYear));
+            }
+        });
         return view;
     }
 
@@ -133,6 +162,21 @@ public class Fragment2Months extends Fragment {
                 }
             }
         }
+    }
+
+    private void clearSumData() {
+        sumJan = 0;
+        sumFeb = 0;
+        sumMarch = 0;
+        sumApril = 0;
+        sumMay = 0;
+        sumJune = 0;
+        sumJuly = 0;
+        sumAug = 0;
+        sumSept = 0;
+        sumOct = 0;
+        sumNov = 0;
+        sumDec = 0;
     }
 }
 

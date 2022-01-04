@@ -8,6 +8,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -36,6 +39,8 @@ public class Fragment1Week extends Fragment {
     private static String[] currentWeek = new String[7];
     private BarChart barChartDistanceWeek;
     private int sumMon, sumTue, sumWed, sumThu, sumFri, sumSat, sumSun;
+    private int amountToButton;
+    private TextView tvWeek;
 
     private static String[] testWeek = new String[]{
             "2021-11-22",
@@ -53,9 +58,39 @@ public class Fragment1Week extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_1_week, container, false);
         barChartDistanceWeek = view.findViewById(R.id.bar_chart_distance_week);
-        getCurrentWeek();
+        tvWeek = view.findViewById(R.id.week_date);
+        getCurrentWeek(0);
         sumDistanceWeek();
         setupDistanceGraph();
+        setTextViewWeek();
+        ImageButton button = (ImageButton) view.findViewById(R.id.week_button_right);
+        button.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                clearSumData();
+                amountToButton += 7;
+                getCurrentWeek(amountToButton);
+                sumDistanceWeek();
+                setupDistanceGraph();
+                setTextViewWeek();
+            }
+        });
+        ImageButton button2 = (ImageButton) view.findViewById(R.id.week_button_left);
+        button2.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                clearSumData();
+                amountToButton -= 7;
+                getCurrentWeek(amountToButton);
+                sumDistanceWeek();
+                setupDistanceGraph();
+                setTextViewWeek();
+            }
+        });
         return view;
     }
 
@@ -72,16 +107,26 @@ public class Fragment1Week extends Fragment {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    private void getCurrentWeek() {
+    private void getCurrentWeek(int amount) {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         Calendar calendar = Calendar.getInstance();
         calendar.setFirstDayOfWeek(Calendar.MONDAY);
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
-
+        calendar.add(Calendar.DATE, amount);
         for (int i = 0; i < currentWeek.length; i++) {
             currentWeek[i] = format.format(calendar.getTime());
             calendar.add(Calendar.DAY_OF_MONTH, 1);
         }
+    }
+
+    private void setTextViewWeek() {
+        String lastDay = currentWeek[currentWeek.length - 1];
+        String firstDay = currentWeek[0];
+        String [] arr1 = firstDay.split("-");
+        String [] arr2 = lastDay.split("-");
+        String newDateFormat = "";
+        newDateFormat = arr1[arr1.length-1] + "-" + arr2[arr2.length-1] + "." + arr1[1] + "." + arr1[0];
+        tvWeek.setText(newDateFormat);
     }
 
     public void sumDistanceWeek() {
@@ -136,5 +181,14 @@ public class Fragment1Week extends Fragment {
         barChartDistanceWeek.animateY(1000);
     }
 
+    private void clearSumData() {
+        sumMon = 0;
+        sumTue = 0;
+        sumWed = 0;
+        sumThu = 0;
+        sumFri = 0;
+        sumSat = 0;
+        sumSun = 0;
+    }
 
 }
