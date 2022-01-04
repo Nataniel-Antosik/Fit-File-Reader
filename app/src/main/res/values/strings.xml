@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">fitFileReader</string>
+    <string name="app_name">Swim Analyzer</string>
     <string name="create_directory">Create Directory</string>
     <string name="take_data">Take Data</string>
 
