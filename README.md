@@ -13,6 +13,9 @@ https://developer.garmin.com/fit/download/
 ### Graphs
 https://github.com/PhilJay/MPAndroidChart
 
+### Hashing function
+https://howtodoinjava.com/java/io/sha-md5-file-checksum-hash/
+
 ## Technologies
 Project is created with:
 * Java
