@@ -94,7 +94,7 @@ public class TrainingActivity extends AppCompatActivity {
 
         setUpPieChart();
         loadPieChartData();
-        loadBarChartHeartRate();
+        loadBarChartHeartRate(trainingId);
         loadBarChartAvgSpeed();
         loadBarChartAvgCadence();
 
@@ -244,26 +244,34 @@ public class TrainingActivity extends AppCompatActivity {
         return maxHeartRateInWater;
     }
 
-    public static int maxHeartRate(int age) {
-        int maxHeartRate = 0;
-        maxHeartRate = 220 - age;
-        return maxHeartRate;
-    }
+    public static int maxHeartRate(int age) { return (220 - age); }
 
     public static void typeOfTraining(int age, int heartRate){
         int MHRIW = maxHeartRateInWater(age);
         if(heartRate < (int) (MHRIW * 0.60)) {
             warmUp += 1;
+            String tmp = String.format("%s,  (inf,%s)", heartRate, ((int) (MHRIW * 0.60)));
+            Log.d("warmUp", tmp);
         } else if (heartRate >= ((int) (MHRIW * 0.60)) && heartRate <= ((int) (MHRIW * 0.65))) {
             activeRegenerationZone += 1;
+            String tmp = String.format("%s,  <%s,%s>", heartRate, ((int) (MHRIW * 0.60)), ((int) (MHRIW * 0.65)));
+            Log.d("activeRegenerationZone", tmp);
         } else if (heartRate >= ((int) (MHRIW * 0.66)) && heartRate <= ((int) (MHRIW * 0.72))) {
             enduranceTraining += 1;
+            String tmp = String.format("%s,  <%s,%s>", heartRate, ((int) (MHRIW * 0.66)), ((int) (MHRIW * 0.72)));
+            Log.d("enduranceTraining", tmp);
         } else if (heartRate >= ((int) (MHRIW * 0.73)) && heartRate <= ((int) (MHRIW * 0.83))) {
             improvedCardiovascularPerformance += 1;
+            String tmp = String.format("%s,  <%s,%s>", heartRate, ((int) (MHRIW * 0.73)), ((int) (MHRIW * 0.83)));
+            Log.d("impCardiovrPerforma", tmp);
         } else if (heartRate >= ((int) (MHRIW * 0.84)) && heartRate <= ((int) (MHRIW * 0.90))) {
             lactateThreshold += 1;
+            String tmp = String.format("%s,  <%s,%s>", heartRate, ((int) (MHRIW * 0.84)), ((int) (MHRIW * 0.90)));
+            Log.d("lactateThreshold", tmp);
         } else if (heartRate >= ((int) (MHRIW * 0.91))) {
             VO2max += 1;
+            String tmp = String.format("%s,  <%s,inf>", heartRate, ((int) (MHRIW * 0.91)));
+            Log.d("VO2max", tmp);
         }
     }
 
@@ -329,7 +337,7 @@ public class TrainingActivity extends AppCompatActivity {
         pieChart.animateY(1400, Easing.EaseInOutQuad);
     }
 
-    private void loadBarChartHeartRate() {
+    private void loadBarChartHeartRate(int trainingId) {
         FileDatabase database = FileDatabase.getDbInstance(this.getApplicationContext());
         UserDatabase userDatabase = UserDatabase.getDbInstance(this.getApplicationContext());
         String age = splitDateAndGetAge(userDatabase.userDao().getUserBirthdayDate(), correctDate(database.fileDao().getTrainingDate(trainingId)));
@@ -343,34 +351,56 @@ public class TrainingActivity extends AppCompatActivity {
         List<FitFile> fitFileList = database.fileDao().getOneTraining(trainingId);
 
         ArrayList<BarEntry> entriesPace = new ArrayList<>();
+        Log.d("+++++++++++++++", "+++++++++++++++");
 
         for (int i = 0; i < fitFileList.size(); i++){
 
             if (fitFileList.get(i).avgHeartRateDb < (int) (MHRIW * 0.60)) {
                 colors.add(Color.BLUE);
+                String tmp = String.format("%s,  (inf,%s)", fitFileList.get(i).avgHeartRateDb, ((int) (MHRIW * 0.60)));
+                Log.d("warmUp", tmp);
+                entriesPace.add(new BarEntry(i, fitFileList.get(i).avgHeartRateDb));
             }
 
             if(fitFileList.get(i).avgHeartRateDb >= ((int)(MHRIW*0.60)) && fitFileList.get(i).avgHeartRateDb <= ((int)(MHRIW*0.65))){
                 colors.add(Color.CYAN);
+                String tmp = String.format("%s,  <%s,%s>", fitFileList.get(i).avgHeartRateDb, ((int) (MHRIW * 0.60)), ((int) (MHRIW * 0.65)));
+                Log.d("activeRegenerationZone", tmp);
+                entriesPace.add(new BarEntry(i, fitFileList.get(i).avgHeartRateDb));
             }
 
             if (fitFileList.get(i).avgHeartRateDb >= ((int) (MHRIW * 0.66)) && fitFileList.get(i).avgHeartRateDb <= ((int) (MHRIW * 0.72))) {
                 colors.add(Color.MAGENTA);
+                String tmp = String.format("%s,  <%s,%s>", fitFileList.get(i).avgHeartRateDb, ((int) (MHRIW * 0.66)), ((int) (MHRIW * 0.72)));
+                Log.d("enduranceTraining", tmp);
+                entriesPace.add(new BarEntry(i, fitFileList.get(i).avgHeartRateDb));
             }
 
             if (fitFileList.get(i).avgHeartRateDb >= ((int) (MHRIW * 0.73)) && fitFileList.get(i).avgHeartRateDb <= ((int) (MHRIW * 0.83))) {
                 colors.add(Color.GREEN);
+                String tmp = String.format("%s,  <%s,%s>", fitFileList.get(i).avgHeartRateDb, ((int) (MHRIW * 0.73)), ((int) (MHRIW * 0.83)));
+                Log.d("impCardiovrPerforma", tmp);
+                entriesPace.add(new BarEntry(i, fitFileList.get(i).avgHeartRateDb));
             }
 
             if (fitFileList.get(i).avgHeartRateDb >= ((int) (MHRIW * 0.84)) && fitFileList.get(i).avgHeartRateDb <= ((int) (MHRIW * 0.90))) {
                 colors.add(Color.YELLOW);
+                String tmp = String.format("%s,  <%s,%s>", fitFileList.get(i).avgHeartRateDb, ((int) (MHRIW * 0.84)), ((int) (MHRIW * 0.90)));
+                Log.d("lactateThreshold", tmp);
+                entriesPace.add(new BarEntry(i, fitFileList.get(i).avgHeartRateDb));
             }
 
             if (fitFileList.get(i).avgHeartRateDb >= ((int) (MHRIW * 0.91))) {
                 colors.add(Color.RED);
+                String tmp = String.format("%s,  <%s,inf>", fitFileList.get(i).avgHeartRateDb, ((int) (MHRIW * 0.91)));
+                Log.d("VO2max", tmp);
+                entriesPace.add(new BarEntry(i, fitFileList.get(i).avgHeartRateDb));
             }
-            entriesPace.add(new BarEntry(i + 1, fitFileList.get(i).avgHeartRateDb));
         }
+
+        Log.d("===", "===");
+        Log.d("fitFile size", String.valueOf(fitFileList.size()));
+        Log.d("Count color", String.valueOf(colors.size()));
 
         BarDataSet barDataSet = new BarDataSet(entriesPace, "Heart Rate");
         barDataSet.setColors(colors);
@@ -472,7 +502,7 @@ public class TrainingActivity extends AppCompatActivity {
         ArrayList<BarEntry> entriesPace = new ArrayList<>();
 
         for (int i = 0; i < fitFileList.size(); i++) {
-            entriesPace.add(new BarEntry(i + 1, fitFileList.get(i).avarageSpeedDb));
+            entriesPace.add(new BarEntry(i, fitFileList.get(i).avarageSpeedDb));
         }
 
         BarDataSet barDataSet = new BarDataSet(entriesPace, "Average Speed");
@@ -496,7 +526,7 @@ public class TrainingActivity extends AppCompatActivity {
         ArrayList<BarEntry> entriesPace = new ArrayList<>();
 
         for (int i = 0; i < fitFileList.size(); i++) {
-            entriesPace.add(new BarEntry(i + 1, fitFileList.get(i).avarageCadenceDb));
+            entriesPace.add(new BarEntry(i, fitFileList.get(i).avarageCadenceDb));
         }
 
         BarDataSet barDataSet = new BarDataSet(entriesPace, "Average Cadence");
