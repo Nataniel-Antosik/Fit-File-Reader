@@ -1,6 +1,6 @@
 # Fit-File-Reader
 
-Mobile application in java to read fit files.
+Mobile application Swim Analyzer in java to read fit files and analyses swimming data from training.
 
 ## Documentation
 https://developer.garmin.com/fit/overview/
