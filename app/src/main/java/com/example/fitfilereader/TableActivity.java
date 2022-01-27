@@ -47,7 +47,7 @@ public class TableActivity extends AppCompatActivity {
         ArrayList<String> headerList = new ArrayList<String>();
 
         headerList.add("Interval ");
-        headerList.add("Swim Storke ");
+        headerList.add("Swim Stroke ");
         headerList.add("Total Swum Distance ");
         headerList.add("Average Pace /100m ");
         headerList.add("Average Heart Rate ");
