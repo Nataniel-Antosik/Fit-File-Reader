@@ -33,7 +33,7 @@ Project is created with:
 ### Main view
 <p float="left" align="center">
   <img src="https://user-images.githubusercontent.com/57491794/148696008-edc54a48-d4c3-4d40-95c4-06cb66eab87e.jpg" width="350" title="Main view">
-  <img src="https://user-images.githubusercontent.com/57491794/148696010-05d11dfc-dfc2-4900-b82e-e6bdbbe02653.jpg" width="350" title="Menu Drawer">
+  <img src="https://user-images.githubusercontent.com/57491794/151428392-4d383049-5945-4d67-b81a-760ecfd99e50.jpg" width="350" title="Menu Drawer">
 </p>
 
 ### Training view
@@ -49,7 +49,7 @@ Project is created with:
 
 ### Table view
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/57491794/148696041-80b18ad2-fd1a-4a16-af30-ffa092f8a832.jpg" width="350" title="Table data">
+  <img src="https://user-images.githubusercontent.com/57491794/151428472-cfb8c9c0-cdf1-49e9-943c-8dc5979ca590.jpg" width="350" title="Table data">
 </p>
 
 ### General statistic view
